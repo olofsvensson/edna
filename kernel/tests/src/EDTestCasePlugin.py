@@ -41,7 +41,7 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120131"
 
-import sys, os, threading, urllib2, exceptions, tempfile
+import sys, os, threading, urllib2, tempfile
 
 from EDVerbose          import EDVerbose
 from EDUtilsPath        import EDUtilsPath
@@ -160,7 +160,7 @@ class EDTestCasePlugin(EDTestCase):
         try:
             edFactoryPlugin = EDFactoryPlugin()
             edPlugin = edFactoryPlugin.loadPlugin(self.getPluginName())
-        except exceptions.ImportError, exceptionObject:
+        except ImportError as exceptionObject:
             strWarningMessage = "Could not create the plugin: %s, reason: %s" % (self.getPluginName(), exceptionObject)
             EDVerbose.WARNING(strWarningMessage)
         if edPlugin is None:
@@ -235,15 +235,15 @@ class EDTestCasePlugin(EDTestCase):
                 try:
                     open(strImagePath, "wb").write(data)
                 except IOError:
-                    raise IOError, "unable to write downloaded data to disk at %s" % strImagePath
+                    raise IOError("unable to write downloaded data to disk at %s" % strImagePath)
 
                 if os.path.exists(strImagePath):
                     EDVerbose.unitTest("Image %s successfully downloaded." % strImagePath)
                 else:
-                    raise RuntimeError, "Could not automatically download test images %r! \n \
+                    raise RuntimeError("Could not automatically download test images %r! \n \
                                          If you are behind a firewall, please set the environment variable http_proxy. \n \
                                          Otherwise please try to download the images manually from \n \
-                                         http://www.edna-site.org/data/tests/images" % _listImageFileName
+                                         http://www.edna-site.org/data/tests/images" % _listImageFileName)
 
 
 
@@ -270,7 +270,7 @@ def timeoutDuringDownload():
     """
     Function called after a timeout in the download part ... just raise an Exception. 
     """
-    raise RuntimeError, "Could not automatically download test images ! \n \
+    raise RuntimeError("Could not automatically download test images ! \n \
                          If you are behind a firewall, please set the environment variable http_proxy. \n \
                          Otherwise please try to download the images manually from \n \
-                         http://www.edna-site.org/data/tests/images"
+                         http://www.edna-site.org/data/tests/images")

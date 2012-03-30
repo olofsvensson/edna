@@ -223,7 +223,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 if (EDVerbose.isVerboseDebug()):
-                    raise RuntimeError, strErrorMessage
+                    raise RuntimeError(strErrorMessage)
 
 
 
@@ -263,7 +263,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
                 if (EDVerbose.isVerboseDebug()):
-                    raise RuntimeError, strErrorMessage
+                    raise RuntimeError(strErrorMessage)
             else:
                 # Check that the executable file exists
                 if (os.path.exists(strScriptExecutable) == False):
@@ -272,7 +272,7 @@ class EDPluginExecProcessScript(EDPluginExecProcess):
                     self.addErrorMessage(strErrorMessage)
                     self.setFailure()
                     if (EDVerbose.isVerboseDebug()):
-                        raise RuntimeError, strErrorMessage
+                        raise RuntimeError(strErrorMessage)
                 else:
                     self.setScriptExecutable(strScriptExecutable)
         strConfigSetupCCP4 = EDConfiguration.getStringParamValue(xsPluginItem, EDPluginExecProcessScript.CONF_EXEC_PROCESS_SCRIPT_SETUP_CCP4)

@@ -54,7 +54,7 @@ import os, sys, tempfile, signal, time, threading
 
 # Append the EDNA kernel source directory to the python path
 
-if not os.environ.has_key("EDNA_HOME"):
+if not "EDNA_HOME" in os.environ.keys():
     strProgramPath = os.path.abspath(sys.argv[0])
     pyListPath = strProgramPath.split(os.sep)
     if len(pyListPath) > 3:
@@ -123,9 +123,9 @@ def fnXMLoutExample(_strXMLin, _strXMLout):
     @rtype: None
     @return: None     
     """
-    print "Successful processing of :"
-    print _strXMLin
-    print _strXMLout
+    print("Successful processing of :")
+    print(_strXMLin)
+    print(_strXMLout)
     return None
 
 
@@ -137,8 +137,8 @@ def fnXMLerrExample(_strXMLin):
     @rtype: None
     @return: None     
     """
-    print "An error occurred while proceeding this :"
-    print _strXMLin
+    print("An error occurred while proceeding this :")
+    print(_strXMLin)
     return None
 
 
@@ -228,7 +228,7 @@ class EDParallelExecute(EDLogging):
         if _strMode == "dirwatch":
             self.watch_directories(_bNewerOnly)
         elif _strMode == "inotify":
-            print "inotify online notify mode not yet implemented"
+            print("inotify online notify mode not yet implemented")
             raise
         else: #mode offline
             self.runEdnaFunction(self.__listInputPaths, _bIncludeSubdirs=True)
@@ -425,7 +425,7 @@ class EDParallelExecute(EDLogging):
             elif listChangedFiles:
                 rescan = self.runEdnaFunction(listChangedFiles, _bIncludeSubdirs=False)
             time.sleep(self.__fDelay)
-        print "Quitting the online mode."
+        print("Quitting the online mode.")
 
 
     def handleKill(self, signum, frame):
@@ -488,10 +488,10 @@ class EDParallelExecute(EDLogging):
         edPlugin = EDFactoryPluginStatic.loadPlugin(self.__strPluginName)
         for strOneMethod in  listMethods:
             try:
-                print "calling edPlugin.%s" % strOneMethod
-                exec "edPlugin.%s" % strOneMethod
+                print("calling edPlugin.%s" % strOneMethod)
+                exec("edPlugin.%s" % strOneMethod)
             except:
-                print "error in processing %s" % strOneMethod
+                print("error in processing %s" % strOneMethod)
 
 
 ################################################################################
@@ -553,11 +553,11 @@ if __name__ == '__main__':
 
     if len(listPaths) == 0:
         if strMode == "OffLine":
-            print "This is the DiffractionCTv1 application of EDNA %s, \nplease give a path to process offline or the option:\n\
+            print("This is the DiffractionCTv1 application of EDNA %s, \nplease give a path to process offline or the option:\n\
             --online to process online incoming data in the given directory.\n\
             --all to process all existing files (unless they will be excluded)\n\
             --debug to turn on debugging mode in EDNA\n\
-            --nCPU=xxx to specify the number of CPUs to use. Usually EDNA auto-detects the number of processors." % EDNAPluginName
+            --nCPU=xxx to specify the number of CPUs to use. Usually EDNA auto-detects the number of processors." % EDNAPluginName)
             sys.exit()
         else:
             listPaths = [os.getcwd()]

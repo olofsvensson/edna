@@ -78,7 +78,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         """
         EDTestCasePlugin.preProcess(self)
         if(self.__strEdnaSite == None):
-            raise RuntimeError, "EDNA_SITE must be set"
+            raise RuntimeError("EDNA_SITE must be set")
         # Load the plugin that should be executed
         self.__edPlugin = EDFactoryPluginStatic.loadPlugin(self.getPluginName())
         if(self.__edPlugin is not None):
@@ -172,7 +172,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         else:
             strErrorMessage = "ERROR: " + str(self.__class__) + ".setDataInputFile, no data input file defined for key: " + strDataInputKey
             EDVerbose.error(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         return strDataInputFile
 
 
@@ -206,7 +206,7 @@ class EDTestCasePluginExecute(EDTestCasePlugin):
         else:
             strErrorMessage = "ERROR: " + str(self.__class__) + ".getReferenceDataOutputFile, no data output file defined for key: " + strDataOutputKey
             EDVerbose.error(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         return strReferenceDataOutputFile
 
 

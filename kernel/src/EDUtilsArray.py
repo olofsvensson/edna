@@ -56,7 +56,7 @@ if (numpy is not None) and ("floating" in dir(numpy)):
 else:
     try:
         numpy = __import__("numpy")
-    except ImportError, error:
+    except ImportError as error:
         EDVerbose.ERROR("Import numpy failed with error %s" % error)
         bHaveNumpy = False
     else:
@@ -68,7 +68,7 @@ if  fabio is not None:
 else:
     try:
         fabio = __import__("fabio")
-    except ImportError, error:
+    except ImportError as error:
         EDVerbose.ERROR("Import fabio failed with error %s" % error)
         bHaveFabio = False
     else:

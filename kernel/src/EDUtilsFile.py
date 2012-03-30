@@ -38,7 +38,7 @@ This is a static utility class for handling of files.
 """
 
 
-import os, shutil, exceptions
+import os, shutil
 from EDVerbose import EDVerbose
 
 
@@ -52,10 +52,10 @@ class EDUtilsFile(object):
         strContent = None
         try:
             strContent = open(_strFileName, "rb").read()
-        except exceptions.Exception, e:
+        except Exception as e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
-            raise exceptions.IOError(strError)
+            raise IOError(strError)
         return strContent
 
 
@@ -68,10 +68,10 @@ class EDUtilsFile(object):
                 myFile.write(_strContent)
                 myFile.flush()
 
-        except exceptions.Exception, e:
+        except Exception as e:
             strError = "EDUtilsFile.writeFile: Writing %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
-            raise exceptions.IOError(strError)
+            raise IOError(strError)
 
 
     @classmethod

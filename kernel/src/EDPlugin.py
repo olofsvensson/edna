@@ -342,7 +342,7 @@ class EDPlugin(EDAction):
             strErrorMessage = "ERROR: " + self.getPluginName() + ".setXSDataInputClass, Data Input Class already defined for key: " + strDataInputKey
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         self.__dictXSDataInputClass[ strDataInputKey ] = _xsDataInputClass
 
 
@@ -386,7 +386,7 @@ class EDPlugin(EDAction):
             strErrorMessage = "ERROR: " + self.getPluginName() + ".setDataInput, Data Input Class not defined for key: " + strDataInputKey
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
         else:
             # Check the type
             xsDataInput = None
@@ -401,7 +401,7 @@ class EDPlugin(EDAction):
                                   (self.getPluginName(), _oDataInput.__class__, strDataInputKey, self.getXSDataInputClass(strDataInputKey))
                 self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
-                raise RuntimeError, strErrorMessage
+                raise RuntimeError(strErrorMessage)
             # Add the object to a list if its key is not the default key
             if (strDataInputKey != self.__strDefaultInputDataKey) :
                 # Check if there's already a list stored
@@ -677,7 +677,7 @@ class EDPlugin(EDAction):
         # Try to create the directory...
         try:
             os.mkdir(strBaseDir)
-        except BaseException, strErrorDetail:
+        except BaseException as strErrorDetail:
             self.error("EDPlugin.createBaseName: Could not create base directory %s because of %s" % (strBaseDir, strErrorDetail))
             self.warning("EDPlugin.createBaseName: Trying to create alternative base directory...")
             self.writeErrorTrace()
@@ -759,7 +759,7 @@ class EDPlugin(EDAction):
             strErrorMessage = "%s: input parameter is missing: %s" % (self.getPluginName(), _strParamName)
             self.error(strErrorMessage)
             self.addErrorMessage(strErrorMessage)
-            raise RuntimeError, strErrorMessage
+            raise RuntimeError(strErrorMessage)
 
 
     def checkImportantParameters(self, _xsData, _strParamName):

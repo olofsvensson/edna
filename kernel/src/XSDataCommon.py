@@ -4,7 +4,7 @@
 # Generated Fri Jul 8 10:08::30 2011 by EDGenerateDS.
 #
 from __future__ import with_statement
-import sys, cPickle
+import sys
 from xml.dom import minidom
 from xml.dom import Node
 
@@ -20,8 +20,10 @@ from xml.dom import Node
 if sys.version.startswith('3'):
     unicode = str
     from io import StringIO
+    import pickle
 else:
     from StringIO import StringIO
+    import cPickle as pickle
 
 
 def showIndent(outfile, level):
@@ -256,14 +258,14 @@ class XSData(object):
                     xsd.__dict__[key] = val
         return xsd
 
-    def pickle(self, filename, protocol=cPickle.HIGHEST_PROTOCOL):
+    def pickle(self, filename, protocol=pickle.HIGHEST_PROTOCOL):
         with open(filename, "w") as f:
-            cPickle.dump(self.exportToDict(), f , protocol=protocol)
+            pickle.dump(self.exportToDict(), f , protocol=protocol)
 
     @classmethod
     def unPickle(cls, filename):
         with open(filename, "r") as f:
-            xsd = cls.importFromDict(cPickle.load(f))
+            xsd = cls.importFromDict(pickle.load(f))
         return xsd
 
     #Static method for parsing a string

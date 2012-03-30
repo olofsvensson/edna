@@ -117,7 +117,7 @@ class EDAssert:
             f.close()
             EQUAL_ERROR_ASSERT_MESSAGE = _strComment + " FAILURE: Expected different from obtained - identifier %s" % strUniqueIndentifier
             EDVerbose.ASSERT(EQUAL_ERROR_ASSERT_MESSAGE)
-            raise AssertionError, EQUAL_ERROR_ASSERT_MESSAGE
+            raise AssertionError(EQUAL_ERROR_ASSERT_MESSAGE)
 
 
     @staticmethod
@@ -201,7 +201,7 @@ class EDAssert:
             f.close()
             EQUAL_ERROR_ASSERT_MESSAGE = "FAILURE: %s \nIdentifier %s" % (ERROR_ASSERT_MESSAGE, strUniqueIndentifier)
             EDVerbose.ASSERT(EQUAL_ERROR_ASSERT_MESSAGE)
-            raise AssertionError, EQUAL_ERROR_ASSERT_MESSAGE
+            raise AssertionError(EQUAL_ERROR_ASSERT_MESSAGE)
         else:
             EDVerbose.ASSERT("OK " + _strComment)
 
@@ -217,7 +217,7 @@ class EDAssert:
         if not os.path.isfile(_strFilename):
             EQUAL_ERROR_ASSERT_MESSAGE = "FAILURE: " + _strComment + "\n Filename does not exist " + _strFilename
             EDVerbose.ASSERT(EQUAL_ERROR_ASSERT_MESSAGE)
-            raise AssertionError, EQUAL_ERROR_ASSERT_MESSAGE
+            raise AssertionError(EQUAL_ERROR_ASSERT_MESSAGE)
         else:
             EDVerbose.ASSERT("OK " + _strComment)
 
@@ -233,7 +233,7 @@ class EDAssert:
         if _fValue >= _fReference:
             EQUAL_ERROR_ASSERT_MESSAGE = "FAILURE: %s\n Obtained value %s should be lower than %s !!" % (_strComment, _fValue, _fReference)
             EDVerbose.ASSERT(EQUAL_ERROR_ASSERT_MESSAGE)
-            raise AssertionError, EQUAL_ERROR_ASSERT_MESSAGE
+            raise AssertionError(EQUAL_ERROR_ASSERT_MESSAGE)
         else:
             EDVerbose.ASSERT("OK " + _strComment)
 
@@ -249,7 +249,7 @@ class EDAssert:
         if _fValue <= _fReference:
             EQUAL_ERROR_ASSERT_MESSAGE = "FAILURE: %s\n Obtained value %s should be greater than %s !!" % (_strComment, _fValue, _fReference)
             EDVerbose.ASSERT(EQUAL_ERROR_ASSERT_MESSAGE)
-            raise AssertionError, EQUAL_ERROR_ASSERT_MESSAGE
+            raise AssertionError(EQUAL_ERROR_ASSERT_MESSAGE)
         else:
             EDVerbose.ASSERT("OK " + _strComment)
 
@@ -317,7 +317,7 @@ class EDAssert:
 
         if not bAlmostEqual:
             EDVerbose.ASSERT("FAILURE: %s, %s " % (_strComment, ERROR_ASSERT_MESSAGE))
-            raise AssertionError, ERROR_ASSERT_MESSAGE
+            raise AssertionError(ERROR_ASSERT_MESSAGE)
         else:
             EDVerbose.ASSERT("OK " + _strComment)
 
