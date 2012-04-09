@@ -41,7 +41,13 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120131"
 
-import sys, os, threading, urllib2
+import sys, os, threading
+
+# Compabiltity between Python 2 and 3:
+if sys.version.startswith('3'):
+    import urllib
+else:
+    import urllib2 as urllib
 
 from EDVerbose          import EDVerbose
 from EDUtilsPath        import EDUtilsPath
@@ -212,10 +218,10 @@ class EDTestCasePlugin(EDTestCase):
                 EDVerbose.unitTest("Trying to download image %s, timeout set to %d s" % (strImagePath, iMAX_DOWNLOAD_TIME))
                 if os.environ.has_key("http_proxy"):
                     dictProxies = {'http': os.environ["http_proxy"]}
-                    proxy_handler = urllib2.ProxyHandler(dictProxies)
-                    opener = urllib2.build_opener(proxy_handler).open
+                    proxy_handler = urllib.ProxyHandler(dictProxies)
+                    opener = urllib.build_opener(proxy_handler).open
                 else:
-                    opener = urllib2.urlopen
+                    opener = urllib.urlopen
 
 # Nota: since python2.6 there is a timeout in the urllib2                    
                 timer = threading.Timer(iMAX_DOWNLOAD_TIME + 1, timeoutDuringDownload)

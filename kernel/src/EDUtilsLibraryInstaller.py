@@ -33,7 +33,14 @@ __author__ = "Jerome Kieffer"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, shutil, sys, zipfile, tarfile, urllib2, threading
+import os, shutil, sys, zipfile, tarfile, threading
+
+# Compabiltity between Python 2 and 3:
+if sys.version.startswith('3'):
+    import urllib
+else:
+    import urllib2 as urllib
+
 from   EDVerbose        import  EDVerbose
 from EDUtilsPlatform    import EDUtilsPlatform
 from EDUtilsPath        import EDUtilsPath
@@ -372,10 +379,10 @@ class EDUtilsLibraryInstaller:
             EDVerbose.screen("Trying to download library %s, timeout set to %d s" % (self.__strArchiveName, EDUtilsLibraryInstaller.iMAX_DOWNLOAD_TIME))
             if os.environ.has_key("http_proxy"):
                 dictProxies = {'http': os.environ["http_proxy"]}
-                proxy_handler = urllib2.ProxyHandler(dictProxies)
-                opener = urllib2.build_opener(proxy_handler).open
+                proxy_handler = urllib.ProxyHandler(dictProxies)
+                opener = urllib.build_opener(proxy_handler).open
             else:
-                opener = urllib2.urlopen
+                opener = urllib.urlopen
             strURL = "/".join((_strServer, self.__strArchiveName))
             # Nota: since python2.6 there is a timeout in the urllib2                    
             if sys.version > (2, 6):

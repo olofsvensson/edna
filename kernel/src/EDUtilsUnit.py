@@ -9,6 +9,7 @@
 #                            Grenoble, France
 #
 #    Principal authors: Jérôme Kieffer (jerome.kieffer@esrf.fr)
+#                       Olof Svensson (svensson@esrf.fr)
 # 
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -25,13 +26,18 @@
 #    and the GNU Lesser General Public License  along with this program.  
 #    If not, see <http://www.gnu.org/licenses/>.
 #
-__authors__ = [ "Jérôme Kieffer" ]
+__authors__ = [ "Jérôme Kieffer", "Olof Svensson" ]
 __contact__ = "jerome.kieffer@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
 
-import math
+import sys, math
+
+# Compabiltity between Python 2 and 3:
+if sys.version.startswith('3'):
+    unicode = str
+
 from EDVerbose import EDVerbose
 from XSDataCommon import XSDataString
 

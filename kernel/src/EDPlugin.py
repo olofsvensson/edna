@@ -30,7 +30,11 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
-import os, tempfile, stat, types
+import sys, os, tempfile, stat, types
+
+# Compabiltity between Python 2 and 3:
+if sys.version.startswith('3'):
+    unicode = str
 
 from EDSlot             import EDSlot
 from EDApplication      import EDApplication
@@ -479,7 +483,7 @@ class EDPlugin(EDAction):
             self.__dictXSDataOutput[ strDataOutputKey ] = _xsDataOutput
         else:
             # Check if the _xsDataoutput object is already a list
-            if (type(_xsDataOutput) == types.ListType):
+            if (type(_xsDataOutput) == list):
                 self.__dictXSDataOutput[ strDataOutputKey ] = _xsDataOutput
             else:
                 # Check if the stored object contains already a list
