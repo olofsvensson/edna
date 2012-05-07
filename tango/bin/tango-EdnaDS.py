@@ -60,21 +60,25 @@ if not os.environ.has_key("EDNA_HOME"):
 
 sys.path.append(os.path.join(os.environ["EDNA_HOME"], "kernel", "src"))
 
-from EDJob                  import EDJob
-from EDLogging              import EDLogging
+from EDLoggingTango         import EDLoggingTango
 from EDVerbose              import EDVerbose
 from EDUtilsParallel        import EDUtilsParallel
+from EDJob                  import EDJob
 from EDStatus               import EDStatus
-from EDFactoryPluginStatic  import EDFactoryPluginStatic
+from EDFactoryPlugin        import EDFactoryPlugin
+        
 
-
-class EdnaDS(PyTango.Device_4Impl, EDLogging):
+class EdnaDS(PyTango.Device_4Impl, EDLoggingTango):
     """
     Tango device server launcher for EDNA server.
     """
     def __init__(self, cl, name):
-        EDLogging.__init__(self)
         PyTango.Device_4Impl.__init__(self, cl, name)
+        EDLoggingTango.__init__(self)
+        EDVerbose.setLogger(self)
+        self.__edFactoryPlugin = EDFactoryPlugin()
+        self.__edFactoryPlugin.setLogger(self)
+        self.screen("Hello world!")
         self.init_device()
         if isinstance(iNbCpu, int):
             self.screen("Initializing tangoDS with max %i jobs in parallel." % iNbCpu)
@@ -129,7 +133,8 @@ class EdnaDS(PyTango.Device_4Impl, EDLogging):
         return EDJob.cleanJobFromID(jobId)
 
     def initPlugin(self, strPluginName):
-        plugin = EDFactoryPluginStatic.loadPlugin(strPluginName)
+        plugin = self.__edFactoryPlugin.loadPlugin(strPluginName)
+        plugin.setLogger(self)
         if plugin is None:
             return "Plugin not found: %s" % strPluginName
         else:
@@ -148,11 +153,12 @@ class EdnaDS(PyTango.Device_4Impl, EDLogging):
         @param argin: 2-list [ "EDPluginName", "<xml/><XSDataInputPluginName>...."]
         @return: jobID which is a sting: Plugin-000001
         """
-        self.DEBUG("In %s.startJob()" % self.get_name())
+        self.screen("In startJob(), argin=%s" % argin)
         name, xsd = argin[:2]
         if xsd.strip() == "":
             return
         edJob = EDJob(name)
+        EDJob.setLogger(self)
         if edJob is None:
             return "Error in load Plugin"
         jobId = edJob.getJobId()
@@ -176,7 +182,7 @@ class EdnaDS(PyTango.Device_4Impl, EDLogging):
                 edJob.execute()
 
     def successJobExecution(self, jobId):
-        self.DEBUG("In %s.successJobExecution(%s)" % (self.get_name(), jobId))
+        self.screen("In %s.successJobExecution(%s)" % (self.get_name(), jobId))
         with self.locked():
             self.__semaphoreNbThreads.release()
             EDJob.cleanJobfromID(jobId, False)
@@ -185,7 +191,7 @@ class EdnaDS(PyTango.Device_4Impl, EDLogging):
             gc.collect()
 
     def failureJobExecution(self, jobId):
-        self.DEBUG("In %s.failureJobExecution(%s)" % (self.get_name(), jobId))
+        self.screen("In %s.failureJobExecution(%s)" % (self.get_name(), jobId))
         with self.locked():
             self.__semaphoreNbThreads.release()
             EDJob.cleanJobfromID(jobId, False)

@@ -55,6 +55,10 @@ class EDLogging(EDObject):
             self.edLogging = EDLoggingVerbose()
 
 
+    def setLogger(self, _logger):
+        self.edLogging=_logger
+
+
     def setLogLevel(self, _logLevel):
         self.edLogging.setLogLevel(_logLevel)
 
