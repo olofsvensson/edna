@@ -41,20 +41,16 @@ class EDLoggingTango(EDObject):
     """
     This class is meant to be used for TANGO device servers.
     """
-    __semaphoreLogging = Semaphore()
-    __dictLoggers = {}
-    __logLevel = logging.INFO
-    __bInitisalised = False
-
-    UNIT_TEST_LEVEL = 25
-    UNIT_TEST_NAME = "UNIT_TEST"
-
-    ASSERT_LEVEL = 55
-    ASSERT_NAME = "ASSERT"
-
+    __tangoDevice=None
 
     def __init__(self):
         EDObject.__init__(self)
+        
+        
+    @staticmethod
+    def setTangoDevice(_tangoDevice):
+        print "EDLoggingTango: ", _tangoDevice
+        EDLoggingTango.__tangoDevice = _tangoDevice
 
 
     def setLogLevel(self, _logLevel):
@@ -134,10 +130,13 @@ class EDLoggingTango(EDObject):
         @param _strMessage: The string to be written to the log file
         @type _strMessage: python string
         """
-        self.info_stream(_strMessage)
+        try:
+            EDLoggingTango.__tangoDevice.info_stream(_strMessage)
+        except Exception:
+            print(_strMessage)
 
 
-    def DEBUG(self, _strDebugMessage=""):
+    def DEBUG(self, _strMessage=""):
         """
         This method writes a debug message to standard output and to the log file
         if debugging is enabled. The message will be written with the prefix [DEBUG]
@@ -145,7 +144,10 @@ class EDLoggingTango(EDObject):
         @param _strDebugMessage: The debug message to be written to standard output and log file
         @type _strDebugMessage: python string
         """
-        self.debug_stream(_strDebugMessage)
+        try:
+            self.__tangoDevice.debug_stream(_strMessage)
+        except Exception:
+            print(_strMessage)
 
 
     def unitTest(self, _strMessage=""):
@@ -156,7 +158,7 @@ class EDLoggingTango(EDObject):
         @param _strMessage: The message to be written to standard output and log file
         @type _strMessage: python string
         """
-        self.info_stream(_strMessage)
+        self.screen(_strMessage)
 
 
     def ERROR(self, _strMessage=""):
@@ -166,7 +168,10 @@ class EDLoggingTango(EDObject):
         @param _strMessage: The error message to be written to standard output and log file
         @type _strMessage: python string
         """
-        self.error_stream(_strMessage)
+        try:
+            self.__tangoDevice.error_stream(_strMessage)
+        except Exception as e:
+            print(_strMessage)
 
 
     def error(self, _strMessage=""):
@@ -186,7 +191,10 @@ class EDLoggingTango(EDObject):
         @param _strMessage: The error message to be written to standard output and log file
         @type _strMessage: python string
         """
-        self.warn_stream(_strMessage)
+        try:
+            self.__tangoDevice.warn_stream(_strMessage)
+        except Exception:
+            print(_strMessage)
 
 
     def warning(self, _strMessage=""):
@@ -206,7 +214,7 @@ class EDLoggingTango(EDObject):
         @param _strMessage: The error message to be written to standard output and log file
         @type _strMessage: python string
         """
-        sself.warn_stream(_strMessage)
+        self.warning(_strMessage)
 
 
     def writeErrorTrace(self, _strPrefix="  "):
@@ -219,14 +227,14 @@ class EDLoggingTango(EDObject):
         """
         (exc_type, exc_value, exc_traceback) = sys.exc_info()
         pyListTrace = traceback.extract_tb(exc_traceback)
-        self.logger.error(_strPrefix + "Traceback (most recent call last):\n")
+        self.error(_strPrefix + "Traceback (most recent call last):\n")
         for pyListLine in pyListTrace:
-            self.logger.error(_strPrefix + "  File \"%s\", line %d, in %s\n" % (pyListLine[0],
+            self.error(_strPrefix + "  File \"%s\", line %d, in %s\n" % (pyListLine[0],
                                                                                         pyListLine[1],
                                                                                         pyListLine[2]))
-            self.logger.error(_strPrefix + "    " + pyListLine[3] + os.linesep)
+            self.error(_strPrefix + "    " + pyListLine[3] + os.linesep)
         strErrorMessage = traceback.format_exception_only(exc_type, exc_value)[0][:-1]
-        self.logger.error(_strPrefix + strErrorMessage + os.linesep)
+        self.error(_strPrefix + strErrorMessage + os.linesep)
 
 
     def setLogFileName(self, _strLogFileName):

@@ -2,9 +2,7 @@
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDVerbose.py 2300 2010-10-28 12:49:04Z svensson $"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors: Olof Svensson (svensson@esrf.fr) 
@@ -35,10 +33,14 @@ __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 
+import os
 
-from EDObject import EDObject
-from EDLoggingVerbose import EDLoggingVerbose
+from EDObject           import EDObject
+from EDLoggingVerbose   import EDLoggingVerbose
 from EDLoggingPyLogging import EDLoggingPyLogging
+from EDLoggingTango     import EDLoggingTango
+
+
 
 
 class EDLogging(EDObject):
@@ -49,10 +51,16 @@ class EDLogging(EDObject):
 
     def __init__(self, _strLoggerName="EDVerbose"):
         EDObject.__init__(self)
-        if _strLoggerName == "PyLogging":
-            self.edLogging = EDLoggingPyLogging()
+        if "EDNA_LOGGING" in os.environ.keys():
+            strLoggerName = os.environ["EDNA_LOGGING"]
         else:
+            strLoggerName = _strLoggerName
+        if strLoggerName == "EDVerbose":
             self.edLogging = EDLoggingVerbose()
+        elif strLoggerName == "PyLogging":
+            self.edLogging = EDLoggingPyLogging()
+        elif strLoggerName == "Tango":
+            self.edLogging = EDLoggingTango()
 
 
     def setLogger(self, _logger):
@@ -177,6 +185,7 @@ class EDLogging(EDObject):
         @param _strMessage: The error message to be written to standard output and log file
         @type _strMessage: python string
         """
+        print self.edLogging
         self.edLogging.error(_strMessage)
 
 

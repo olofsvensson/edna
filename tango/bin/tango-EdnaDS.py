@@ -4,12 +4,11 @@
 #    Project: Tango Device Server
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C)2010 ESRF
+#    Copyright (C) 2010-20120 ESRF
 #
 #    Principal author:        Matias GUIJARRO (Matias.GUIJARRO@esrf.eu)
 #                             Jérôme Kieffer  (jerome.kieffer@esrf.eu)
+#                             Olof Svensson  (svensson@esrf.eu)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -26,7 +25,7 @@
 #
 from __future__ import with_statement
 
-__authors__ = [ "Matias GUIJARRO", "Jérôme Kieffer", "Cyril Guilloud" ]
+__authors__ = [ "Matias GUIJARRO", "Jérôme Kieffer", "Cyril Guilloud", "Olof Svensson" ]
 __contact__ = "jerome.kieffer@esrf.eu"
 __license__ = "GPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
@@ -34,6 +33,9 @@ __date__ = "20110919"
 __status__ = "beta"
 
 import sys, os, threading, gc, time
+
+os.environ["EDNA_LOGGING"] = "Tango"
+
 import PyTango
 if sys.version > (3, 0):
     from queue import Queue
@@ -65,9 +67,8 @@ from EDVerbose              import EDVerbose
 from EDUtilsParallel        import EDUtilsParallel
 from EDJob                  import EDJob
 from EDStatus               import EDStatus
-from EDFactoryPlugin        import EDFactoryPlugin
+from EDFactoryPluginStatic  import EDFactoryPluginStatic
         
-
 class EdnaDS(PyTango.Device_4Impl, EDLoggingTango):
     """
     Tango device server launcher for EDNA server.
@@ -75,11 +76,9 @@ class EdnaDS(PyTango.Device_4Impl, EDLoggingTango):
     def __init__(self, cl, name):
         PyTango.Device_4Impl.__init__(self, cl, name)
         EDLoggingTango.__init__(self)
-        EDVerbose.setLogger(self)
-        self.__edFactoryPlugin = EDFactoryPlugin()
-        self.__edFactoryPlugin.setLogger(self)
-        self.screen("Hello world!")
+        EDLoggingTango.setTangoDevice(self)
         self.init_device()
+        self.screen("Hello world!")
         if isinstance(iNbCpu, int):
             self.screen("Initializing tangoDS with max %i jobs in parallel." % iNbCpu)
             self.__semaphoreNbThreads = threading.Semaphore(iNbCpu)
@@ -133,8 +132,7 @@ class EdnaDS(PyTango.Device_4Impl, EDLoggingTango):
         return EDJob.cleanJobFromID(jobId)
 
     def initPlugin(self, strPluginName):
-        plugin = self.__edFactoryPlugin.loadPlugin(strPluginName)
-        plugin.setLogger(self)
+        plugin = EDFactoryPluginStatic.loadPlugin(strPluginName)
         if plugin is None:
             return "Plugin not found: %s" % strPluginName
         else:
@@ -158,7 +156,6 @@ class EdnaDS(PyTango.Device_4Impl, EDLoggingTango):
         if xsd.strip() == "":
             return
         edJob = EDJob(name)
-        EDJob.setLogger(self)
         if edJob is None:
             return "Error in load Plugin"
         jobId = edJob.getJobId()
