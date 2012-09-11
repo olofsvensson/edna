@@ -169,13 +169,10 @@ class EDPluginISPyBStoreAutoProcv1_4(EDPluginExec):
 
     
     def getDateValue(self, _strValue, _strFormat, _oDefaultValue):
-        if _strValue is None:
+        if _strValue is None or _strValue == "None":
             oReturnValue = _oDefaultValue
         else:
-            try:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
-            except:
-                oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
+            oReturnValue = DateTime(datetime.datetime.strptime(_strValue, _strFormat))
         return oReturnValue
     
 

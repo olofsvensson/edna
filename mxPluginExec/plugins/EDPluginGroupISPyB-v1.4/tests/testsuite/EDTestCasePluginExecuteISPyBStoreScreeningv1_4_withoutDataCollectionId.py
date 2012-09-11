@@ -35,7 +35,7 @@ from EDAssert import EDAssert
 from EDTestCasePluginExecute          import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteISPyBStoreScreeningv1_4(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteISPyBStoreScreeningv1_4_withoutDataCollectionId(EDTestCasePluginExecute):
 
     def __init__(self, _edStringTestName=None):
         """
@@ -45,7 +45,7 @@ class EDTestCasePluginExecuteISPyBStoreScreeningv1_4(EDTestCasePluginExecute):
 
         #self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration_ESRF_testDataBaseJboss6.xml"))
         self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(), "XSConfiguration_ESRF_productionDataBase.xml"))
-        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputISPyBStoreScreening_test.xml"))
+        self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputISPyBStoreScreening_withoutDataCollectionId.xml"))
 
 
     def testExecute(self):
@@ -70,6 +70,3 @@ class EDTestCasePluginExecuteISPyBStoreScreeningv1_4(EDTestCasePluginExecute):
         self.addTestMethod(self.testExecute)
 
 
-if __name__ == '__main__':
-    edTestCasePluginExecuteISPyBStoreScreeningv1_4 = EDTestCasePluginExecuteISPyBStoreScreeningv1_4("EDTestCasePluginExecuteISPyBStoreScreeningv1_4")
-    edTestCasePluginExecuteISPyBStoreScreeningv1_4.execute()
