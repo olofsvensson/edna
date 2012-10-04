@@ -3,9 +3,7 @@
 #    Project: The EDNA Kernel
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors: Marie-Francoise Incardona (incardon@esrf.fr)
@@ -38,23 +36,24 @@ This is a static utility class for handling of files.
 """
 
 
-import sys, os, shutil
-
-
+import os, shutil, exceptions
 from EDVerbose import EDVerbose
 
 
 class EDUtilsFile(object):
-    """
-    """
+
+    
     @staticmethod
     def readFile(_strFileName):
         """
+        Reads and returns the content of a file.
+        @param _strFileName: Path to the file
+        @return: String containing the contents of the file.
         """
         strContent = None
         try:
-            strContent = open(_strFileName, "r").read()
-        except Exception as e:
+            strContent = open(_strFileName, "rb").read()
+        except exceptions.Exception, e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
             raise IOError(strError)
@@ -64,6 +63,10 @@ class EDUtilsFile(object):
     @staticmethod
     def writeFile(_strFileName, _strContent):
         """
+        Writes a string to a file. If the string is not already in unicode
+        format it will be converted to unicode.
+        @param _strFileName: Path to file, will be created if not existing
+        @param _strContent: String content to be written to the file
         """
         try:
             with open(_strFileName, "wb") as myFile:
@@ -86,6 +89,8 @@ class EDUtilsFile(object):
         Returns the content of this file as a string.
         Any environment variables present in the file are substituted, as well as
         any occurrences of strings in the optional dictionary.
+        @param _strFileName: Path to the file
+        @param _dict: Optional dictoionary
         """
         strContent = cls.readFile(_strFileName)
         # Substitute environment variables 
@@ -102,6 +107,7 @@ class EDUtilsFile(object):
     def getFileExtension(_strFileName):
         """
         Returns the file extension, e.g. "img" for "testscale_1_001.img"
+        @param _strFileName: String containing the file name
         """
         strFileExtension = None
         strFileSplit = os.path.splitext(_strFileName)

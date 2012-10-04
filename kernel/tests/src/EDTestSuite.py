@@ -40,6 +40,8 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120216"
 
+import exceptions
+
 from EDVerbose          import EDVerbose
 from EDTest             import EDTest
 from EDUtilsTest        import EDUtilsTest
@@ -83,6 +85,8 @@ class EDTestSuite(EDTest):
         @return: NumberTestCaseFailure
         @rtype: integer 
         """
+        edTestCase = None
+        exceptionObject = None
         try:
             edTestCase = EDUtilsTest.getFactoryPluginTest().loadPlugin(_strTestCaseName)
             if edTestCase is None:
@@ -95,6 +99,13 @@ class EDTestSuite(EDTest):
             strWarningMessage = "Could not create the test case: %s, reason: %s" % (_strTestCaseName, exceptionObject)
             EDVerbose.WARNING(strWarningMessage)
             self.__dictTestCaseNotExecuted[_strTestCaseName] = "%s : %s" % (self.getClassName(), strWarningMessage)
+        if edTestCase is None:
+            if exceptionObject is None:
+                EDVerbose.error("EDTestSuite.addTestCaseFromName: Could not create the test case: " + _strTestCaseName)
+                self.__dictTestCaseNotExecuted[_strTestCaseName] = "%s : Could not create the test case" % self.getClassName()
+        else:
+            edTestCase.setTestSuiteName(self.getClassName())
+            self.__listTestCase.append(edTestCase)
 
 
     def addTestSuiteFromName(self, _strTestSuiteName):

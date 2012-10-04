@@ -4,7 +4,7 @@
 # Generated Fri Jul 8 10:08::30 2011 by EDGenerateDS.
 #
 from __future__ import with_statement
-import sys
+import sys, cPickle
 from xml.dom import minidom
 from xml.dom import Node
 
@@ -258,14 +258,14 @@ class XSData(object):
                     xsd.__dict__[key] = val
         return xsd
 
-    def pickle(self, filename, protocol=pickle.HIGHEST_PROTOCOL):
+    def pickle(self, filename, protocol=cPickle.HIGHEST_PROTOCOL):
         with open(filename, "w") as f:
-            pickle.dump(self.exportToDict(), f , protocol=protocol)
+            cPickle.dump(self.exportToDict(), f , protocol=protocol)
 
     @classmethod
     def unPickle(cls, filename):
         with open(filename, "r") as f:
-            xsd = cls.importFromDict(pickle.load(f))
+            xsd = cls.importFromDict(cPickle.load(f))
         return xsd
 
     #Static method for parsing a string
