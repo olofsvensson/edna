@@ -34,5 +34,3 @@ pip-log.txt
 
 #EDNA/eclipse specific
 /.XSDataDictionaryModule.xml
-/.project
-/.pydevproject
