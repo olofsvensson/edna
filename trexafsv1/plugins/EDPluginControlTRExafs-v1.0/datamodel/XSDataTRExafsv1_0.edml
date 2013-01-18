@@ -1,0 +1,16 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+import XSDataCommon.XSDataFile
+import XSDataCommon.XSDataArray
+
+
+complex type XSDataInputTRExafs extends XSDataInput {
+	energy : XSDataArray 
+	dataArray : XSDataArray 
+}
+
+complex type XSDataResultTRExafs extends XSDataResult {
+	nexusFile : XSDataFile
+}
