@@ -1,0 +1,30 @@
+targetNamespace "http://www.edna-site.org"
+
+import XSDataCommon.XSData
+import XSDataCommon.XSDataAngle
+import XSDataCommon.XSDataLength
+import XSDataCommon.XSDataSize
+import XSDataCommon.XSDataInteger
+import XSDataCommon.XSDataInput
+import XSDataCommon.XSDataResult
+
+complex type XSDataSamplePosition extends XSData {
+	omega : double optional
+	sampx : double
+	sampy : double
+	omegay : double
+	omegaz : double
+}
+
+complex type XSDataInputCalculateHelicalPositions extends XSDataInput {
+	pos1 : XSDataSamplePosition
+	pos2 : XSDataSamplePosition
+	omega_start : double 
+	omega_stop : double 
+	beamsize_y : double optional
+	no_positions : integer optional
+}
+
+complex type XSDataResultCalculateHelicalPositions extends XSDataResult {
+	sample_position : XSDataSamplePosition [] optional
+}
