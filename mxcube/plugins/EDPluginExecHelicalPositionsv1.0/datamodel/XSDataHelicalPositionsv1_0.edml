@@ -1,10 +1,6 @@
 targetNamespace "http://www.edna-site.org"
 
 import XSDataCommon.XSData
-import XSDataCommon.XSDataAngle
-import XSDataCommon.XSDataLength
-import XSDataCommon.XSDataSize
-import XSDataCommon.XSDataInteger
 import XSDataCommon.XSDataInput
 import XSDataCommon.XSDataResult
 
