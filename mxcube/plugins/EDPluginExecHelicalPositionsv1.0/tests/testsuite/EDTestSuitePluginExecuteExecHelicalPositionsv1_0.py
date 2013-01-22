@@ -39,4 +39,6 @@ class EDTestSuitePluginExecuteExecHelicalPositionsv1_0(EDTestSuite):
     def process(self):
         self.addTestCaseFromName("EDTestCasePluginExecuteExecHelicalPositionsv1_0_useCase1")
         self.addTestCaseFromName("EDTestCasePluginExecuteExecHelicalPositionsv1_0_useCase2")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecHelicalPositionsv1_0_useCase3")
+        self.addTestCaseFromName("EDTestCasePluginExecuteExecHelicalPositionsv1_0_useCase4")
 

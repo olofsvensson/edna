@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<XSDataInputCalculateHelicalPositions>
+  <pos1>
+  	<sampx>-1.0</sampx>
+  	<sampy>-1.0</sampy>
+  	<omegay>-1.0</omegay>
+  	<omegaz>-1.0</omegaz>
+  </pos1>
+  <pos2>
+  	<sampx>1.0</sampx>
+  	<sampy>1.0</sampy>
+  	<omegay>1.0</omegay>
+  	<omegaz>1.0</omegaz>
+  </pos2>
+  <omega_start>0.0</omega_start>
+  <omega_stop>10.0</omega_stop>
+  <beamsize_y>0.050</beamsize_y>
+  <no_positions>11</no_positions>
+</XSDataInputCalculateHelicalPositions>

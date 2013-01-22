@@ -84,19 +84,24 @@ class EDPluginExecHelicalPositionsv1_0(EDPluginExec ):
         hp1_omegaz = (pos1.omegaz - pos2.omegaz) / omegay_range
         #
         hp2_sampx  = (pos1.omegay * pos2.sampx - pos2.omegay * pos1.sampx) / omegay_range
-        hp2_sampy  = (pos1.omegay * pos2.sampy - pos2.omegay * pos1.sampx) / omegay_range
+        hp2_sampy  = (pos1.omegay * pos2.sampy - pos2.omegay * pos1.sampy) / omegay_range
         hp2_omegay = omega_start * pos2.omegay - omega_stop * pos1.omegay / omega_range 
-        hp2_omegaz = pos1.omegay * pos2.omegaz - pos2.omegay * pos2.omegaz / omegay_range
+        hp2_omegaz = (pos1.omegay * pos2.omegaz - pos2.omegay * pos1.omegaz) / omegay_range
         #
         fOmegaPos = omega_start
         xsDataResultCalculateHelicalPositions = XSDataResultCalculateHelicalPositions()
         for i in range(iNoPositions):
             newPosition = XSDataSamplePosition()
+            omegay = hp1_omegay * fOmegaPos + hp2_omegay
+            omegaz = hp1_omegaz * omegay + hp2_omegaz
+            sampx  = hp1_sampx  * omegay + hp2_sampx
+            sampy  = hp1_sampy  * omegay + hp2_sampy
+            
             newPosition.omega = fOmegaPos
-            newPosition.omegay = hp1_omegay * fOmegaPos + hp2_omegay
-            newPosition.omegaz = hp1_omegaz * fOmegaPos + hp2_omegaz
-            newPosition.sampx  = hp1_sampx  * fOmegaPos + hp2_sampx
-            newPosition.sampy  = hp1_sampy  * fOmegaPos + hp2_sampy
+            newPosition.sampx  = sampx
+            newPosition.sampy  = sampy
+            newPosition.omegay = omegay
+            newPosition.omegaz = omegaz
             fOmegaPos += delta_omega
             xsDataResultCalculateHelicalPositions.addSample_position(newPosition)
         self.setDataOutput(xsDataResultCalculateHelicalPositions)
