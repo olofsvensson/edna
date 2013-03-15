@@ -59,7 +59,7 @@ class EDTestCasePluginUnitExecJesfv1_0(EDTestCasePluginUnit):
         edPluginExecJesf.setWorkingDirectory(self.getPluginTestsDataHome())
         edPluginExecJesf.setScriptLogFileName(os.path.join(self.getPluginTestsDataHome(), "jesf.log"))
         xsDataResultJesf = edPluginExecJesf.readJesfResults()
-        print xsDataResultJesf.marshal()
+#        print xsDataResultJesf.marshal()
     
     def process(self):
         self.addTestMethod(self.testCheckParameters)
