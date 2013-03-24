@@ -30,7 +30,6 @@ __copyright__ = "<copyright>"
 import numpy
 
 from EDPluginControl import EDPluginControl
-from EDUtilsFile import EDUtilsFile
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsArray import EDUtilsArray
 
@@ -52,6 +51,7 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         self.setXSDataInputClass(XSDataInputTRExafs)   
         self.strControlledPluginName = "EDPluginExecJesfv1_0"
         self.edPluginExecJesf = None
+        self.listEdPluginExecJesf = []
         
     def process(self, _edObject = None):
         EDPluginControl.process(self)
@@ -61,22 +61,187 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         self.checkMandatoryParameters(self.dataInput.dataArray, "Data Input 'dataArray' is None")
         numpyDataArray = EDUtilsArray.xsDataToArray(self.dataInput.dataArray)
         numpyEnergyCalibrationArray = EDUtilsArray.xsDataToArray(self.dataInput.energy)
+        # Launch Jesf
+        listEdPluginExecJesf = self.launchJesfPlugins(numpyDataArray, numpyEnergyCalibrationArray)
+        # Create result data arrays
+        dictResultArrays = self.createResultArrays(listEdPluginExecJesf)
+        
+
+        
+        
+    def launchJesfPlugins(self, _numpyDataArray, _numpyEnergyCalibrationArray):
+        listEdPluginExecJesf = []
+        (iNoRows, iNoColumns) = _numpyDataArray.shape
         # Loop through all the columns of self.numpyInputArray
-        (iNoRows, iNoColumns) = numpyDataArray.shape
         for iColumn in range(iNoColumns):
             # Load the execution plugin
-            self.edPluginExecJesf = self.loadPlugin(self.strControlledPluginName) 
-            self.edPluginExecJesf.connectSUCCESS(self.doSuccessExecTemplate)
-            self.edPluginExecJesf.connectFAILURE(self.doFailureExecTemplate)
+            edPluginExecJesf = self.loadPlugin(self.strControlledPluginName) 
+#            edPluginExecJesf.connectSUCCESS(self.doSuccessExecTemplate)
+#            edPluginExecJesf.connectFAILURE(self.doFailureExecTemplate)
             numpyArrayInputJesf = numpy.ndarray((iNoRows,2))
-            numpyArrayInputJesf[:,0] = numpyEnergyCalibrationArray
-            numpyArrayInputJesf[:,1] = numpyDataArray[:, iColumn]
+            numpyArrayInputJesf[:,0] = _numpyEnergyCalibrationArray
+            numpyArrayInputJesf[:,1] = _numpyDataArray[:, iColumn]
             xsDataInputJesf = XSDataInputJesf()
             xsDataInputJesf.data = EDUtilsArray.arrayToXSData(numpyArrayInputJesf)
-            print xsDataInputJesf.marshal()
-            self.edPluginExecJesf.dataInput = xsDataInputJesf
-            self.edPluginExecJesf.executeSynchronous()
+#            print xsDataInputJesf.marshal()
+            edPluginExecJesf.dataInput = xsDataInputJesf
+#            self.edPluginExecJesf.executeSynchronous()
+            listEdPluginExecJesf.append([iColumn, edPluginExecJesf])
+            edPluginExecJesf.execute()
+        # Synchronize all jobs
+        self.screen("Synchronizing Jesf jobs")
+        for listPlugin in listEdPluginExecJesf:
+            listPlugin[1].synchronize()
+        return listEdPluginExecJesf
 
+
+    def createResultArrays(self, _listEdPluginExecJesf):
+        # Find the max dimensions for each result array
+        dictArray = {}
+        iNSpectra = len(_listEdPluginExecJesf)
+        iMaxDimFort92 = 0
+        iMaxDimFort95 = 0
+        iMaxDimFort96 = 0
+        iMaxDimFort97 = 0
+        iMaxDimFort98 = 0
+        iMaxDimFort99 = 0
+        for listPlugin in _listEdPluginExecJesf:
+            edPluginJesf = listPlugin[1]
+            if not edPluginJesf.isFailure():
+                xsDataResultJesf = edPluginJesf.dataOutput
+                # Fort92
+                if xsDataResultJesf.fort92 is not None:
+                    xsDataArrayFort92 = xsDataResultJesf.fort92
+                    iNelementsFort92 = xsDataArrayFort92.shape[0]
+                    if iNelementsFort92 > iMaxDimFort92:
+                        iMaxDimFort92 = iNelementsFort92
+                # Fort95
+                if xsDataResultJesf.fort95 is not None:
+                    xsDataArrayFort95 = xsDataResultJesf.fort95
+                    iNelementsFort95 = xsDataArrayFort95.shape[0]
+                    if iNelementsFort95 > iMaxDimFort95:
+                        iMaxDimFort95 = iNelementsFort95
+                # Fort96
+                if xsDataResultJesf.fort96 is not None:
+                    xsDataArrayFort96 = xsDataResultJesf.fort96
+                    iNelementsFort96 = xsDataArrayFort96.shape[0]
+                    if iNelementsFort96 > iMaxDimFort96:
+                        iMaxDimFort96 = iNelementsFort96
+                # Fort97
+                if xsDataResultJesf.fort97 is not None:
+                    xsDataArrayFort97 = xsDataResultJesf.fort97
+                    iNelementsFort97 = xsDataArrayFort97.shape[0]
+                    if iNelementsFort97 > iMaxDimFort97:
+                        iMaxDimFort97 = iNelementsFort97
+                # Fort98
+                if xsDataResultJesf.fort98 is not None:
+                    xsDataArrayFort98 = xsDataResultJesf.fort98
+                    iNelementsFort98 = xsDataArrayFort98.shape[0]
+                    if iNelementsFort98 > iMaxDimFort98:
+                        iMaxDimFort98 = iNelementsFort98
+                # Fort99
+                if xsDataResultJesf.fort99 is not None:
+                    xsDataArrayFort99 = xsDataResultJesf.fort99
+                    iNelementsFort99 = xsDataArrayFort99.shape[0]
+                    if iNelementsFort99 > iMaxDimFort99:
+                        iMaxDimFort99 = iNelementsFort99
+        # Create data arrays
+        if iMaxDimFort92 > 0:
+            print "iMaxDimFort92: %d" % iMaxDimFort92
+            numpyDataAxis1Fort92 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort92 = numpy.zeros((iMaxDimFort92))            
+            numpyDataArrayFort92 = numpy.zeros((iNSpectra,iMaxDimFort92))
+        else:
+            numpyDataArrayFort92 = None
+        if iMaxDimFort95 > 0:
+            print "iMaxDimFort95: %d" % iMaxDimFort95
+            numpyDataAxis1Fort95 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort95 = numpy.zeros((iMaxDimFort95))            
+            numpyDataArrayFort95 = numpy.zeros((iNSpectra,iMaxDimFort95))
+        else:
+            numpyDataArrayFort95 = None
+        if iMaxDimFort96 > 0:
+            print "iMaxDimFort96: %d" % iMaxDimFort96
+            numpyDataAxis1Fort96 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort96 = numpy.zeros((iMaxDimFort96))            
+            numpyDataArrayFort96 = numpy.zeros((iNSpectra,iMaxDimFort96))
+        else:
+            numpyDataArrayFort96 = None
+        if iMaxDimFort97 > 0:
+            print "iMaxDimFort97: %d" % iMaxDimFort97
+            numpyDataAxis1Fort97 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort97 = numpy.zeros((iMaxDimFort97))            
+            numpyDataArrayFort97 = numpy.zeros((iNSpectra,iMaxDimFort97))
+        else:
+            numpyDataArrayFort97 = None
+        if iMaxDimFort98 > 0:
+            print "iMaxDimFort98: %d" % iMaxDimFort98
+            numpyDataAxis1Fort98 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort98 = numpy.zeros((iMaxDimFort98))            
+            numpyDataArrayFort98 = numpy.zeros((iNSpectra,iMaxDimFort98))
+        else:
+            numpyDataArrayFort98 = None
+        if iMaxDimFort99 > 0:
+            print "iMaxDimFort99: %d" % iMaxDimFort99
+            numpyDataAxis1Fort99 = numpy.zeros((iNSpectra))
+            numpyDataAxis2Fort99 = numpy.zeros((iMaxDimFort99))            
+            numpyDataArrayFort99 = numpy.zeros((iNSpectra,iMaxDimFort99))
+        else:
+            numpyDataArrayFort99 = None
+        # Second loop through results
+        for listPlugin in _listEdPluginExecJesf:
+            iSpectra = listPlugin[0]
+            edPluginJesf = listPlugin[1]
+            if not edPluginJesf.isFailure():
+                xsDataResultJesf = edPluginJesf.dataOutput
+                # Fort92
+                if xsDataResultJesf.fort92 is not None:
+                    xsDataArrayFort92 = xsDataResultJesf.fort92
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort92)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataAxis2Fort92[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort92[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                # Fort95
+                if xsDataResultJesf.fort95 is not None:
+                    xsDataArrayFort95 = xsDataResultJesf.fort95
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort95)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataArrayFort95[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                # Fort96
+                if xsDataResultJesf.fort96 is not None:
+                    xsDataArrayFort96 = xsDataResultJesf.fort96
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort96)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataArrayFort96[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                # Fort97
+                if xsDataResultJesf.fort97 is not None:
+                    xsDataArrayFort97 = xsDataResultJesf.fort97
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort97)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataArrayFort97[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                # Fort98
+                if xsDataResultJesf.fort98 is not None:
+                    xsDataArrayFort98 = xsDataResultJesf.fort98
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort98)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataArrayFort98[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                # Fort99
+                if xsDataResultJesf.fort99 is not None:
+                    xsDataArrayFort99 = xsDataResultJesf.fort99
+                    numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort99)
+                    iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
+                    numpyDataArrayFort99[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+        dictArray["fort92"] = {"axis1" : numpyDataAxis1Fort92,
+                               "axis2" : numpyDataAxis2Fort92,
+                               "data"  : numpyDataArrayFort92}
+        import pprint
+        pprint.pprint(dictArray)
+        dictArray["fort95"] = numpyDataArrayFort95
+        dictArray["fort96"] = numpyDataArrayFort96
+        dictArray["fort97"] = numpyDataArrayFort97
+        dictArray["fort98"] = numpyDataArrayFort98
+        dictArray["fort99"] = numpyDataArrayFort99
+        return dictArray
     
     def postProcess(self, _edObject = None):
         EDPluginControl.postProcess(self)
@@ -89,9 +254,11 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
     def doSuccessExecTemplate(self,  _edPlugin = None):
         self.DEBUG("EDPluginControlTRExafsv1_0.doSuccessExecTemplate")
         self.retrieveSuccessMessages(_edPlugin, "EDPluginControlTRExafsv1_0.doSuccessExecTemplate")
+        self.screen("Run "+_edPlugin.getBaseName()+" ended with success!")
 
 
     def doFailureExecTemplate(self,  _edPlugin = None):
         self.DEBUG("EDPluginControlTRExafsv1_0.doFailureExecTemplate")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlTRExafsv1_0.doFailureExecTemplate")
+        self.screen("Run "+_edPlugin.getBaseName()+" ended with failure!")
 

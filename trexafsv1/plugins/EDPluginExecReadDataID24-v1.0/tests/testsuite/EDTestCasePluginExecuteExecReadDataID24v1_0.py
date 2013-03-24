@@ -43,7 +43,8 @@ class EDTestCasePluginExecuteExecReadDataID24v1_0(EDTestCasePluginExecute):
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_<basePluginName>.xml"))
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputReadDataID24_debora.xml"))
+                                           "XSDataInputReadDataID24_pdfoil.xml"))
+#                                           "XSDataInputReadDataID24_debora.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
 #                                                     "XSDataResultJesfv1_0_reference.xml"))
                  
@@ -52,7 +53,7 @@ class EDTestCasePluginExecuteExecReadDataID24v1_0(EDTestCasePluginExecute):
         Download reference file
         """
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage(["data_debora.dat"])
+        self.loadTestImage(["Pdfoil_sequence_10_log_0"])
         
     def testExecute(self):
         self.run()

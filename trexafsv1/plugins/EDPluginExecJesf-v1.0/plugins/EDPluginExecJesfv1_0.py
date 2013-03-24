@@ -81,6 +81,12 @@ class EDPluginExecJesfv1_0(EDPluginExecProcessScript):
         strLog = self.readProcessLogFile()
         listLogLines = strLog.split("\n")
         for strLogLine in listLogLines:
+            if strLogLine.startswith(" MATRICE SINGOLARE!!!!!"):
+                strErrorMessage = "Jesf reports singular matrix!"
+                self.error(strErrorMessage)
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                break
             if strLogLine.startswith(" EDGE="):
                 fEdge = float(strLogLine.split("=")[1])
                 xsDataResultJesf.edge = XSDataDouble(fEdge)
@@ -96,29 +102,30 @@ class EDPluginExecJesfv1_0(EDPluginExecProcessScript):
             elif strLogLine.startswith(" hwl="):
                 fHwl = float(strLogLine.split("=")[1])
                 xsDataResultJesf.hwl = XSDataDouble(fHwl)
-        # Read fort92
-        numpyFort92 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.92"))
-        xsDataArrayFort92 = EDUtilsArray.arrayToXSData(numpyFort92)
-        xsDataResultJesf.setFort92(xsDataArrayFort92)
-        # Read fort95
-        numpyFort95 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.95"))
-        xsDataArrayFort95 = EDUtilsArray.arrayToXSData(numpyFort95)
-        xsDataResultJesf.setFort92(xsDataArrayFort95)
-        # Read fort96
-        numpyFort96 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.96"))
-        xsDataArrayFort96 = EDUtilsArray.arrayToXSData(numpyFort96)
-        xsDataResultJesf.setFort96(xsDataArrayFort96)
-        # Read fort97
-        numpyFort97 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.97"))
-        xsDataArrayFort97 = EDUtilsArray.arrayToXSData(numpyFort97)
-        xsDataResultJesf.setFort97(xsDataArrayFort97)
-        # Read fort98
-        numpyFort98 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.98"))
-        xsDataArrayFort98 = EDUtilsArray.arrayToXSData(numpyFort98)
-        xsDataResultJesf.setFort98(xsDataArrayFort98)
-        # Read fort99
-        numpyFort99 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.99"))
-        xsDataArrayFort99 = EDUtilsArray.arrayToXSData(numpyFort99)
-        xsDataResultJesf.setFort99(xsDataArrayFort99)
+        if not self.isFailure():
+            # Read fort92
+            numpyFort92 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.92"))
+            xsDataArrayFort92 = EDUtilsArray.arrayToXSData(numpyFort92)
+            xsDataResultJesf.setFort92(xsDataArrayFort92)
+            # Read fort95
+            numpyFort95 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.95"))
+            xsDataArrayFort95 = EDUtilsArray.arrayToXSData(numpyFort95)
+            xsDataResultJesf.setFort92(xsDataArrayFort95)
+            # Read fort96
+            numpyFort96 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.96"))
+            xsDataArrayFort96 = EDUtilsArray.arrayToXSData(numpyFort96)
+            xsDataResultJesf.setFort96(xsDataArrayFort96)
+            # Read fort97
+            numpyFort97 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.97"))
+            xsDataArrayFort97 = EDUtilsArray.arrayToXSData(numpyFort97)
+            xsDataResultJesf.setFort97(xsDataArrayFort97)
+            # Read fort98
+            numpyFort98 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.98"))
+            xsDataArrayFort98 = EDUtilsArray.arrayToXSData(numpyFort98)
+            xsDataResultJesf.setFort98(xsDataArrayFort98)
+            # Read fort99
+            numpyFort99 = numpy.genfromtxt(os.path.join(strWorkDir,"fort.99"))
+            xsDataArrayFort99 = EDUtilsArray.arrayToXSData(numpyFort99)
+            xsDataResultJesf.setFort99(xsDataArrayFort99)
         return xsDataResultJesf
         

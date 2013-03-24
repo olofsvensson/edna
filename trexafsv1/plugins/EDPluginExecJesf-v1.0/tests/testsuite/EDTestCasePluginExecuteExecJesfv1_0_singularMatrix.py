@@ -3,6 +3,9 @@
 #    Project: Time-Resolved EXAFS
 #             http://www.edna-site.org
 #
+#    Project: Time-Resolved EXAFS
+#             http://www.edna-site.org
+#
 #    Copyright (C)      2013 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
@@ -26,34 +29,27 @@ __author__="<author>"
 __license__ = "GPLv3+"
 __copyright__ = "<copyright>"
 
-import os
+import os, numpy
 
 from EDVerbose                           import EDVerbose
 from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteControlTRExafsv1_0(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteExecJesfv1_0_singularMatrix(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin <pluginName>
     """
     
     def __init__(self, _strTestName = None):
-        EDTestCasePluginExecute.__init__(self, "EDPluginControlTRExafsv1_0")
+        EDTestCasePluginExecute.__init__(self, "EDPluginExecJesfv1_0")
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_<basePluginName>.xml"))
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputTRExafs_pdfoil.xml"))
-#                                           "XSDataInputTRExafs_debora.xml"))
+                                           "XSDataInputJesfv1_0_singularMatrix.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
 #                                                     "XSDataResultJesfv1_0_reference.xml"))
                  
-    def preProcess(self):
-        """
-        Download reference files
-        """
-        EDTestCasePluginExecute.preProcess(self)
-        #self.loadTestImage(["inputfile.ext"])
         
     def testExecute(self):
         """
