@@ -33,11 +33,19 @@ from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsArray import EDUtilsArray
 
+from XSDataCommon import XSDataString
+from XSDataCommon import XSDataInteger
+
 from XSDataTRExafsv1_0 import XSDataInputTRExafs
 from XSDataTRExafsv1_0 import XSDataResultTRExafs
 
 EDFactoryPluginStatic.loadModule("XSDataJesfv1_0")
 from XSDataJesfv1_0 import XSDataInputJesf
+
+EDFactoryPluginStatic.loadModule("XSDataWriteNexusFilev1_0")
+from XSDataWriteNexusFilev1_0 import XSDataNexusAxis
+from XSDataWriteNexusFilev1_0 import XSDataNexusArrayGroup
+from XSDataWriteNexusFilev1_0 import XSDataInputWriteNexusFile
 
 class EDPluginControlTRExafsv1_0( EDPluginControl ):
     """
@@ -49,7 +57,8 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         """
         EDPluginControl.__init__(self)
         self.setXSDataInputClass(XSDataInputTRExafs)   
-        self.strControlledPluginName = "EDPluginExecJesfv1_0"
+        self.strJesfPluginName = "EDPluginExecJesfv1_0"
+        self.strWriteNexusFilePluginName = "EDPluginExecWriteNexusFilev1_0"
         self.edPluginExecJesf = None
         self.listEdPluginExecJesf = []
         
@@ -75,12 +84,13 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         # Loop through all the columns of self.numpyInputArray
         for iColumn in range(iNoColumns):
             # Load the execution plugin
-            edPluginExecJesf = self.loadPlugin(self.strControlledPluginName) 
+            edPluginExecJesf = self.loadPlugin(self.strJesfPluginName) 
 #            edPluginExecJesf.connectSUCCESS(self.doSuccessExecTemplate)
 #            edPluginExecJesf.connectFAILURE(self.doFailureExecTemplate)
             numpyArrayInputJesf = numpy.ndarray((iNoRows,2))
             numpyArrayInputJesf[:,0] = _numpyEnergyCalibrationArray
             numpyArrayInputJesf[:,1] = _numpyDataArray[:, iColumn]
+            print numpyArrayInputJesf
             xsDataInputJesf = XSDataInputJesf()
             xsDataInputJesf.data = EDUtilsArray.arrayToXSData(numpyArrayInputJesf)
 #            print xsDataInputJesf.marshal()
@@ -93,7 +103,6 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         for listPlugin in listEdPluginExecJesf:
             listPlugin[1].synchronize()
         return listEdPluginExecJesf
-
 
     def createResultArrays(self, _listEdPluginExecJesf):
         # Find the max dimensions for each result array
@@ -148,7 +157,7 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         # Create data arrays
         if iMaxDimFort92 > 0:
             print "iMaxDimFort92: %d" % iMaxDimFort92
-            numpyDataAxis1Fort92 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort92 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort92 = numpy.zeros((iMaxDimFort92))            
             numpyDataArrayFort92 = numpy.zeros((iNSpectra,iMaxDimFort92))
         else:
@@ -201,6 +210,8 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
                     numpyDataAxis2Fort92[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
                     numpyDataArrayFort92[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    print numpyDataAxis2Fort92
+                    print numpyDataArrayFort92
                 # Fort95
                 if xsDataResultJesf.fort95 is not None:
                     xsDataArrayFort95 = xsDataResultJesf.fort95
@@ -231,11 +242,41 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort99)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
                     numpyDataArrayFort99[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+        # Test to store data in nexus file
+        xsDataInputWriteNexusFile = XSDataInputWriteNexusFile()
+        xsDataInputWriteNexusFile.instrument = XSDataString("ID24")
+        xsDataInputWriteNexusFile.outputFileName = XSDataString("id24_test.nxs")
+        xsDataNexusArrayGroup = XSDataNexusArrayGroup()
+        xsDataNexusArrayGroup.title = XSDataString("data")
+        xsDataNexusArrayGroup.long_name = XSDataString("Raw Data")
+        xsDataNexusArrayGroup.data = EDUtilsArray.arrayToXSData(numpyDataArrayFort92)
+        xsDataNexusArrayGroup.signal = XSDataInteger(1)
+        xsDataNexusAxisEnergy = XSDataNexusAxis()
+        xsDataNexusAxisEnergy.title = XSDataString("Energy")
+        xsDataNexusAxisEnergy.long_name = XSDataString("Energy [eV]")
+        xsDataNexusAxisEnergy.primary = XSDataInteger(1)
+        xsDataNexusAxisEnergy.axis = XSDataInteger(0)
+        xsDataNexusAxisEnergy.units = XSDataString("eV")
+        xsDataNexusAxisEnergy.axisData = EDUtilsArray.arrayToXSData(numpyDataAxis2Fort92)
+        xsDataNexusArrayGroup.addAxis(xsDataNexusAxisEnergy)
+        xsDataNexusAxisSpectra = XSDataNexusAxis()
+        xsDataNexusAxisSpectra.title = XSDataString("Spectra")
+        xsDataNexusAxisSpectra.long_name = XSDataString("Specta [number]")
+        xsDataNexusAxisSpectra.primary = XSDataInteger(2)
+        xsDataNexusAxisSpectra.axis = XSDataInteger(1)
+        xsDataNexusAxisSpectra.units = XSDataString("number")
+        xsDataNexusAxisSpectra.axisData = EDUtilsArray.arrayToXSData(numpyDataAxis1Fort92)
+        xsDataNexusArrayGroup.addAxis(xsDataNexusAxisSpectra)
+        xsDataInputWriteNexusFile.addNexusGroup(xsDataNexusArrayGroup)
+#        print xsDataInputWriteNexusFile.marshal()
+        edPluginExecWriteNexusData = self.loadPlugin(self.strWriteNexusFilePluginName)
+        edPluginExecWriteNexusData.dataInput = xsDataInputWriteNexusFile
+        edPluginExecWriteNexusData.executeSynchronous()
         dictArray["fort92"] = {"axis1" : numpyDataAxis1Fort92,
                                "axis2" : numpyDataAxis2Fort92,
                                "data"  : numpyDataArrayFort92}
-        import pprint
-        pprint.pprint(dictArray)
+#        import pprint
+#        pprint.pprint(dictArray)
         dictArray["fort95"] = numpyDataArrayFort95
         dictArray["fort96"] = numpyDataArrayFort96
         dictArray["fort97"] = numpyDataArrayFort97

@@ -54,7 +54,7 @@ class EDPluginExecWriteNexusFilev1_0( EDPluginExec ):
         EDPluginExec.process(self)
         self.DEBUG("EDPluginExecWriteNexusFilev1_0.process")
         xsDataInput = self.getDataInput()
-        print xsDataInput.marshal()
+#        print xsDataInput.marshal()
         fileName = str(xsDataInput.outputFileName.value)
         if xsDataInput.outputFileDirectory is None:
             fileDir = self.getWorkingDirectory()
