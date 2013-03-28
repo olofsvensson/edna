@@ -32,9 +32,11 @@ import numpy, pprint
 from EDPluginControl import EDPluginControl
 from EDFactoryPluginStatic import EDFactoryPluginStatic
 from EDUtilsArray import EDUtilsArray
+from EDUtilsFile import EDUtilsFile
 
 from XSDataCommon import XSDataString
 from XSDataCommon import XSDataInteger
+from XSDataCommon import XSDataArray
 
 from XSDataTRExafsv1_0 import XSDataInputTRExafs
 from XSDataTRExafsv1_0 import XSDataResultTRExafs
@@ -66,8 +68,29 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
         EDPluginControl.process(self)
         self.DEBUG("EDPluginControlTRExafsv1_0.process")
         self.checkMandatoryParameters(self.dataInput, "Data Input is None")
-        self.checkMandatoryParameters(self.dataInput.energy, "Data Input 'energy' is None")
+        # Load from disk if necessary
+        if self.dataInput.energy is None:
+            if self.dataInput.pathToEnergyArray is None:
+                strErrorMessage = "Data Input 'energy' is None"
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                return
+            else:
+                strXmlArray = EDUtilsFile.readFile(self.dataInput.pathToEnergyArray.path.value)
+                xsDataArrayEnergy = XSDataArray.parseString(strXmlArray)
+                self.dataInput.energy = EDUtilsArray.xsDataToArray(xsDataArrayEnergy)
+        if self.dataInput.dataArray is None:
+            if self.dataInput.pathToDataArray is None:
+                strErrorMessage = "Data Input 'dataArray' is None"
+                self.addErrorMessage(strErrorMessage)
+                self.setFailure()
+                return
+            else:
+                strXmlArray = EDUtilsFile.readFile(self.dataInput.pathToDataArray.path.value)
+                xsDataArray = XSDataArray.parseString(strXmlArray)
+                self.dataInput.dataArray = EDUtilsArray.xsDataToArray(xsDataArray)
         self.checkMandatoryParameters(self.dataInput.dataArray, "Data Input 'dataArray' is None")
+        #
         numpyDataArray = EDUtilsArray.xsDataToArray(self.dataInput.dataArray)
         numpyEnergyCalibrationArray = EDUtilsArray.xsDataToArray(self.dataInput.energy)
         numpySpectraArray = numpy.arange((numpyDataArray.shape[0]))
