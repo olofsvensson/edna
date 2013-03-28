@@ -33,7 +33,7 @@ from EDAssert                            import EDAssert
 from EDTestCasePluginExecute             import EDTestCasePluginExecute
 
 
-class EDTestCasePluginExecuteControlTRExafsv1_0(EDTestCasePluginExecute):
+class EDTestCasePluginExecuteControlTRExafsv1_0_debora(EDTestCasePluginExecute):
     """
     Those are all execution tests for the EDNA Exec plugin <pluginName>
     """
@@ -43,7 +43,7 @@ class EDTestCasePluginExecuteControlTRExafsv1_0(EDTestCasePluginExecute):
 #        self.setConfigurationFile(os.path.join(self.getPluginTestsDataHome(),
 #                                               "XSConfiguration_<basePluginName>.xml"))
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), \
-                                           "XSDataInputTRExafs_pdfoil.xml"))
+                                           "XSDataInputTRExafs_debora.xml"))
 #                                           "XSDataInputTRExafs_debora.xml"))
 #        self.setReferenceDataOutputFile(os.path.join(self.getPluginTestsDataHome(), \
 #                                                     "XSDataResultJesfv1_0_reference.xml"))
@@ -53,7 +53,7 @@ class EDTestCasePluginExecuteControlTRExafsv1_0(EDTestCasePluginExecute):
         Download reference files
         """
         EDTestCasePluginExecute.preProcess(self)
-        self.loadTestImage(["XSDataArrayEnergy_pdfoil.xml", "XSDataArrayData_pdfoil.xml"])
+        self.loadTestImage(["XSDataArrayEnergy_debora.xml", "XSDataArrayData_debora.xml"])
         
     def testExecute(self):
         """

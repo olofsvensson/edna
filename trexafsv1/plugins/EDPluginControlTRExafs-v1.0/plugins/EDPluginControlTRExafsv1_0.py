@@ -77,8 +77,7 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
                 return
             else:
                 strXmlArray = EDUtilsFile.readFile(self.dataInput.pathToEnergyArray.path.value)
-                xsDataArrayEnergy = XSDataArray.parseString(strXmlArray)
-                self.dataInput.energy = EDUtilsArray.xsDataToArray(xsDataArrayEnergy)
+                self.dataInput.energy = XSDataArray.parseString(strXmlArray)
         if self.dataInput.dataArray is None:
             if self.dataInput.pathToDataArray is None:
                 strErrorMessage = "Data Input 'dataArray' is None"
@@ -87,8 +86,7 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
                 return
             else:
                 strXmlArray = EDUtilsFile.readFile(self.dataInput.pathToDataArray.path.value)
-                xsDataArray = XSDataArray.parseString(strXmlArray)
-                self.dataInput.dataArray = EDUtilsArray.xsDataToArray(xsDataArray)
+                self.dataInput.dataArray = XSDataArray.parseString(strXmlArray)
         self.checkMandatoryParameters(self.dataInput.dataArray, "Data Input 'dataArray' is None")
         #
         numpyDataArray = EDUtilsArray.xsDataToArray(self.dataInput.dataArray)
@@ -138,7 +136,7 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
             numpyArrayInputJesf = numpy.ndarray((iNoRows,2))
             numpyArrayInputJesf[:,0] = _numpyEnergyCalibrationArray
             numpyArrayInputJesf[:,1] = _numpyDataArray[:, iColumn]
-            print numpyArrayInputJesf
+#            print numpyArrayInputJesf
             xsDataInputJesf = XSDataInputJesf()
             xsDataInputJesf.data = EDUtilsArray.arrayToXSData(numpyArrayInputJesf)
 #            print xsDataInputJesf.marshal()
@@ -207,42 +205,42 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
             print "iMaxDimFort92: %d" % iMaxDimFort92
             numpyDataAxis1Fort92 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort92 = numpy.zeros((iMaxDimFort92))            
-            numpyDataArrayFort92 = numpy.zeros((iNSpectra,iMaxDimFort92))
+            numpyDataArrayFort92 = numpy.zeros((iMaxDimFort92,iNSpectra))
         else:
             numpyDataArrayFort92 = None
         if iMaxDimFort95 > 0:
             print "iMaxDimFort95: %d" % iMaxDimFort95
-            numpyDataAxis1Fort95 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort95 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort95 = numpy.zeros((iMaxDimFort95))            
-            numpyDataArrayFort95 = numpy.zeros((iNSpectra,iMaxDimFort95))
+            numpyDataArrayFort95 = numpy.zeros((iMaxDimFort95,iNSpectra))
         else:
             numpyDataArrayFort95 = None
         if iMaxDimFort96 > 0:
             print "iMaxDimFort96: %d" % iMaxDimFort96
-            numpyDataAxis1Fort96 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort96 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort96 = numpy.zeros((iMaxDimFort96))            
-            numpyDataArrayFort96 = numpy.zeros((iNSpectra,iMaxDimFort96))
+            numpyDataArrayFort96 = numpy.zeros((iMaxDimFort96,iNSpectra))
         else:
             numpyDataArrayFort96 = None
         if iMaxDimFort97 > 0:
             print "iMaxDimFort97: %d" % iMaxDimFort97
-            numpyDataAxis1Fort97 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort97 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort97 = numpy.zeros((iMaxDimFort97))            
-            numpyDataArrayFort97 = numpy.zeros((iNSpectra,iMaxDimFort97))
+            numpyDataArrayFort97 = numpy.zeros((iMaxDimFort97,iNSpectra))
         else:
             numpyDataArrayFort97 = None
         if iMaxDimFort98 > 0:
             print "iMaxDimFort98: %d" % iMaxDimFort98
-            numpyDataAxis1Fort98 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort98 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort98 = numpy.zeros((iMaxDimFort98))            
-            numpyDataArrayFort98 = numpy.zeros((iNSpectra,iMaxDimFort98))
+            numpyDataArrayFort98 = numpy.zeros((iMaxDimFort98,iNSpectra))
         else:
             numpyDataArrayFort98 = None
         if iMaxDimFort99 > 0:
             print "iMaxDimFort99: %d" % iMaxDimFort99
-            numpyDataAxis1Fort99 = numpy.zeros((iNSpectra))
+            numpyDataAxis1Fort99 = numpy.arange((iNSpectra))
             numpyDataAxis2Fort99 = numpy.zeros((iMaxDimFort99))            
-            numpyDataArrayFort99 = numpy.zeros((iNSpectra,iMaxDimFort99))
+            numpyDataArrayFort99 = numpy.zeros((iMaxDimFort99,iNSpectra))
         else:
             numpyDataArrayFort99 = None
         # Second loop through results
@@ -257,39 +255,44 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort92)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
                     numpyDataAxis2Fort92[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
-                    numpyDataArrayFort92[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
-                    print numpyDataAxis2Fort92
-                    print numpyDataArrayFort92
+                    numpyDataArrayFort92[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
+#                    print numpyDataAxis2Fort92
+#                    print numpyDataArrayFort92
                 # Fort95
                 if xsDataResultJesf.fort95 is not None:
                     xsDataArrayFort95 = xsDataResultJesf.fort95
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort95)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
-                    numpyDataArrayFort95[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    numpyDataAxis2Fort95[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort95[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
                 # Fort96
                 if xsDataResultJesf.fort96 is not None:
                     xsDataArrayFort96 = xsDataResultJesf.fort96
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort96)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
-                    numpyDataArrayFort96[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    numpyDataAxis2Fort96[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort96[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
                 # Fort97
                 if xsDataResultJesf.fort97 is not None:
                     xsDataArrayFort97 = xsDataResultJesf.fort97
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort97)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
-                    numpyDataArrayFort97[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    numpyDataAxis2Fort97[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort97[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
                 # Fort98
                 if xsDataResultJesf.fort98 is not None:
                     xsDataArrayFort98 = xsDataResultJesf.fort98
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort98)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
-                    numpyDataArrayFort98[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    numpyDataAxis2Fort98[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort98[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
                 # Fort99
                 if xsDataResultJesf.fort99 is not None:
                     xsDataArrayFort99 = xsDataResultJesf.fort99
                     numpyArrayTmp = EDUtilsArray.xsDataToArray(xsDataArrayFort99)
                     iSizeNumpyArrayTmp = numpyArrayTmp.shape[0]
-                    numpyDataArrayFort99[iSpectra,0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,1]
+                    numpyDataAxis2Fort99[0:iSizeNumpyArrayTmp] = numpyArrayTmp[:,0]
+                    numpyDataArrayFort99[0:iSizeNumpyArrayTmp,iSpectra] = numpyArrayTmp[:,1]
                     
         if numpyDataArrayFort92 is not None:
             dictArray["fort92"] = {"axis1" : numpyDataAxis1Fort92,
@@ -310,7 +313,9 @@ class EDPluginControlTRExafsv1_0( EDPluginControl ):
             dictArray["fort97"] = {"axis1" : numpyDataAxis1Fort97,
                                    "axis2" : numpyDataAxis2Fort97,
                                    "data"  : numpyDataArrayFort97}
-        
+        print numpyDataAxis1Fort97
+        print numpyDataAxis2Fort97
+        print numpyDataArrayFort97
         if numpyDataArrayFort98 is not None:
             dictArray["fort98"] = {"axis1" : numpyDataAxis1Fort98,
                                    "axis2" : numpyDataAxis2Fort98,
