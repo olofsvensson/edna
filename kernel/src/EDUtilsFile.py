@@ -36,7 +36,7 @@ This is a static utility class for handling of files.
 """
 
 
-import os, shutil, exceptions
+import os, sys, shutil
 from EDVerbose import EDVerbose
 
 
@@ -53,7 +53,7 @@ class EDUtilsFile(object):
         strContent = None
         try:
             strContent = open(_strFileName, "rb").read()
-        except exceptions.Exception, e:
+        except Exception as e:
             strError = "EDUtilsFile.readFile: Reading %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)
             raise IOError(strError)
@@ -70,13 +70,11 @@ class EDUtilsFile(object):
         """
         try:
             with open(_strFileName, "wb") as myFile:
-                # Compabiltity between Python 2 and 3:
-                if sys.version.startswith('3'):
-                    myFile.write(bytes(_strContent, 'UTF-8'))
-                else:
+                if type(_strContent) == unicode:
                     myFile.write(_strContent)
+                else:
+                    myFile.write(unicode(_strContent, errors='ignore'))
                 myFile.flush()
-
         except Exception as e:
             strError = "EDUtilsFile.writeFile: Writing %s: %s" % (_strFileName, str(e))
             EDVerbose.ERROR(strError)

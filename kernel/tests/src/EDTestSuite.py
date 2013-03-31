@@ -40,7 +40,6 @@ __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 __date__ = "20120216"
 
-import exceptions
 
 from EDVerbose          import EDVerbose
 from EDTest             import EDTest

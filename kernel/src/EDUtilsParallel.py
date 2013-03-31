@@ -153,8 +153,11 @@ class EDUtilsParallel(object):
             if iNbCPU is None:
                 iNbCPU = 1
 
-    @staticmethod
-    def detectNumberOfCPUs(_iMaxCPU=sys.maxint, _bForce=False):
+            cls._iActualNbCPU = iNbCPU
+
+
+    @classmethod
+    def detectNumberOfCPUs(cls, _iMaxCPU=sys.maxint, _bForce=False):
         """
         class method :
         Detects the number of CPUs on a system. Cribbed from pp.
