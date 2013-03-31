@@ -2,9 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3.py 1682 2010-06-24 11:57:23Z svensson $"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal author:       Olof Svensson (svensson@esrf.fr) 
@@ -39,7 +37,6 @@ class EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_characterisationFailur
     def __init__(self, _edStringTestName=None):
         EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3.__init__(self, "EDPluginControlInterfaceToMXCuBEv1_3")
         self.setDataInputFile(os.path.join(self.getPluginTestsDataHome(), "XSDataInputMXCuBE_characterisationFailure.xml"))
-        self.setAcceptPluginFailure(True)
 
 
     def preProcess(self):

@@ -2,9 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
@@ -32,8 +30,6 @@ __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
 """
 Control plugin for MOSFLM integration.
 """
-
-import exceptions
 
 from EDVerbose import EDVerbose
 
@@ -86,11 +82,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
     def configure(self):
         EDPluginControl.configure(self)
         EDVerbose.DEBUG("EDPluginControlIntegrationv10.configure")
-        xsPluginItem = self.getConfiguration()
-        if (xsPluginItem == None):
-            EDVerbose.DEBUG("EDPluginControlIntegrationv10.configure: No plugin item defined.")
-            xsPluginItem = XSPluginItem()
-        strMaxRMSSpotDeviation = EDConfiguration.getStringParamValue(xsPluginItem, self.__strCONF_CONTROL_INTEGRATION_MAX_RMS)
+        strMaxRMSSpotDeviation = self.config.get(self.__strCONF_CONTROL_INTEGRATION_MAX_RMS)
         if(strMaxRMSSpotDeviation == None):
             EDVerbose.DEBUG("EDPluginControlIntegrationv10.configure: No configuration parameter found for: " + self.__strCONF_CONTROL_INTEGRATION_MAX_RMS + ", no default value.")
         else:
@@ -148,7 +140,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                     edPluginIntegration.connectFAILURE(self.doFailureActionIntegration)
                     # Here we store the sub wedge number for use in the results
                     self.__edPluginIntegrationList.append([iSubWedgeNumber, edPluginIntegration])
-                except exceptions.Exception, strErrorMessage:
+                except Exception, strErrorMessage:
                     self.addErrorMessage(strErrorMessage)
                     EDVerbose.ERROR(strErrorMessage)
                     self.setFailure()
@@ -199,7 +191,7 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                 xsDataIntegrationSubWedgeResult = None
                 try:
                     xsDataIntegrationSubWedgeResult = EDHandlerXSDataMOSFLMv10.generateXSDataIntegrationSubWedgeResult(xsDataMOSFLMOutputIntegration, self.__xsDataExperimentalConditionRefined)
-                except exceptions.Exception, strErrorMessage:
+                except Exception, strErrorMessage:
                     self.addErrorMessage(strErrorMessage)
                     EDVerbose.ERROR(strErrorMessage)
                     self.setFailure()
@@ -226,7 +218,8 @@ class EDPluginControlIntegrationv10(EDPluginControl):
                             self.__xsDataIntegrationResult = XSDataIntegrationResult()
                         self.__xsDataIntegrationResult.addIntegrationSubWedgeResult(xsDataIntegrationSubWedgeResult)
         self.setDataOutput(self.__xsDataIntegrationResult)
-        self.generateIntegrationShortSummary(self.__xsDataIntegrationResult)
+        if self.__xsDataIntegrationResult is not None:
+            self.generateIntegrationShortSummary(self.__xsDataIntegrationResult)
 
 
     def generateExecutiveSummary(self, _edPlugin):

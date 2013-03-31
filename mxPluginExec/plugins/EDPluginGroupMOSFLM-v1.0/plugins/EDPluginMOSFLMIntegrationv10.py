@@ -29,10 +29,12 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20120712"
+__status__ = "production"
 
 import os
 
-from EDVerbose         import EDVerbose
+
 from EDUtilsTable      import EDUtilsTable
 from EDPluginMOSFLMv10 import EDPluginMOSFLMv10
 
@@ -62,29 +64,21 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
 
     def preProcess(self, _edObject=None):
         EDPluginMOSFLMv10.preProcess(self)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.preProcess")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.preProcess")
         self.generateMOSFLMCommands()
 
 
     def postProcess(self, _edObject=None):
         EDPluginMOSFLMv10.postProcess(self)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.postProcess")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.postProcess")
         xsDataMOSFLMOutputIntegration = self.createDataMOSFLMOutputIntegration()
         if (xsDataMOSFLMOutputIntegration is None):
             strError = "MOSFLM integration error : no integration results obtained."
             self.addExecutiveSummaryLine(strError)
-            EDVerbose.ERROR(strError)
+            self.ERROR(strError)
             self.setFailure()
         else:
             self.setDataOutput(xsDataMOSFLMOutputIntegration)
-
-
-    def configure(self):
-        EDPluginMOSFLMv10.configure(self)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.configure")
-        xsPluginItem = self.getConfiguration()
-        if (xsPluginItem == None):
-            EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.configure: xsPluginItem is None")
 
 
     def checkParameters(self):
@@ -92,7 +86,7 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
         Checks the mandatory parameters for MOSLFM indexing
         """
         EDPluginMOSFLMv10.checkParameters(self)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.checkParameters")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.checkParameters")
         self.checkMandatoryParameters(self.getDataInput().getImageEnd(), "imageEnd")
         self.checkMandatoryParameters(self.getDataInput().getImageStart(), "imageStart")
         self.checkMandatoryParameters(self.getDataInput().getOscillationWidth(), "oscillationWidth")
@@ -105,7 +99,7 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
         XSDataMOSFLMIntegrationingInput as self.getDataInput()
         """
         EDPluginMOSFLMv10.generateMOSFLMCommands(self)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.generateMOSFLMCommands")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.generateMOSFLMCommands")
 
         xsDataMOSFLMInputIntegration = self.getDataInput()
 
@@ -130,34 +124,35 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
         # Force name of log file
         self.setScriptLogFileName(self.compactPluginName(self.getClassName())+".log")
 
-        EDVerbose.DEBUG("Finished EDPluginMOSFLMIntegrationv10.generateMOSFLMCommands")
+        self.DEBUG("Finished EDPluginMOSFLMIntegrationv10.generateMOSFLMCommands")
 
 
     def createDataMOSFLMOutputIntegration(self):
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.createDataMOSFLMOutputIntegration")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.createDataMOSFLMOutputIntegration")
         xsDataMOSFLMOutputIntegration = XSDataMOSFLMOutputIntegration()
         # Read bestfile.par, bestfile.hkl and bestfile.dat
         strBestfilePar = self.readBestFile("bestfile.par")
+        bContinue = True
         if (strBestfilePar is not None):
             xsDataMOSFLMOutputIntegration.setBestfilePar(XSDataString(strBestfilePar))
         else:
-            xsDataMOSFLMOutputIntegration = None
+            bContinue = False
 
-        if (xsDataMOSFLMOutputIntegration is not None):
+        if bContinue:
             strBestfileHKL = self.readBestFile("bestfile.hkl")
             if (strBestfileHKL is not None):
                 xsDataMOSFLMOutputIntegration.setBestfileHKL(XSDataString(strBestfileHKL))
             else:
-                xsDataMOSFLMOutputIntegration = None
+                bContinue = False
 
-        if (xsDataMOSFLMOutputIntegration is not None):
+        if bContinue:
             strBestfileDat = self.readBestFile("bestfile.dat")
             if (strBestfileDat is not None):
                 xsDataMOSFLMOutputIntegration.setBestfileDat(XSDataString(strBestfileDat))
             else:
-                xsDataMOSFLMOutputIntegration = None
+                bContinue = False
 
-        if (xsDataMOSFLMOutputIntegration is not None):
+        if bContinue:
             strDnaTablesXML = self.readProcessFile(self.getBaseName() + "_dnaTables.xml")
             xsDataDnaTables = dna_tables.parseString(strDnaTablesXML)
 
@@ -251,12 +246,12 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
             strError = self.readProcessErrorLogFile()
             if (strError is not None) and (strError != ""):
                 strErrorMessage = "EDPluginMOSFLMIntegrationv10.readBestFile : %s" % strError
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
             else:
                 strErrorMessage = "EDPluginMOSFLMIntegrationv10.readBestFile : Cannot read MOSFLM " + _strBestfileName + " file"
-                EDVerbose.error(strErrorMessage)
+                self.error(strErrorMessage)
                 self.addErrorMessage(strErrorMessage)
                 self.setFailure()
         return strBestfile
@@ -335,10 +330,10 @@ class EDPluginMOSFLMIntegrationv10(EDPluginMOSFLMv10):
         Generates a summary of the execution of the plugin.
         """
         EDPluginMOSFLMv10.generateExecutiveSummary(self, _edPlugin)
-        EDVerbose.DEBUG("EDPluginMOSFLMIntegrationv10.createDataMOSFLMOutputIndexing")
+        self.DEBUG("EDPluginMOSFLMIntegrationv10.createDataMOSFLMOutputIndexing")
         xsDataMOSFLMInputIntegration = self.getDataInput()
         xsDataMOSFLMOutputIntegration = self.getDataOutput()
-        if (xsDataMOSFLMOutputIntegration is not None):
+        if xsDataMOSFLMOutputIntegration.getNumberOfFullyRecordedReflections() is not None:
             self.addExecutiveSummaryLine("Execution of MOSFLM integration successful.")
             self.addExecutiveSummaryLine("Image directory     : %s" % xsDataMOSFLMInputIntegration.getDirectory().getValue())
             self.addExecutiveSummaryLine("Image template      : %s" % xsDataMOSFLMInputIntegration.getTemplate().getValue())

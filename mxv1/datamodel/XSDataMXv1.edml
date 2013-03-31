@@ -23,14 +23,6 @@ import XSDataCommon.XSDataWavelength
 package XSDataMXv1 {
 	package MXv1CharacterisationEtc {
 
-		complex type XSDataCharacterisation extends XSData {
-			"Deprecated - only used by EDPluginControlCharacterisationv10\n"
-			dataCollection : XSDataCollection
-			indexingResult : XSDataIndexingResult optional
-			integrationResult : XSDataIntegrationResult optional
-			strategyResult : XSDataStrategyResult optional
-		}
-
 		complex type XSDataImageQualityIndicators extends XSData {
 			binPopCutOffMethod2Res : XSDataDouble
 			goodBraggCandidates : XSDataInteger
@@ -38,10 +30,10 @@ package XSDataMXv1 {
 			image : XSDataImage
 			inResTotal : XSDataInteger
 			inResolutionOvrlSpots : XSDataInteger
-			maxUnitCell : XSDataDouble
+			maxUnitCell : XSDataDouble optional
 			method1Res : XSDataDouble
-			method2Res : XSDataDouble
-			pctSaturationTop50Peaks : XSDataDouble
+			method2Res : XSDataDouble optional
+			pctSaturationTop50Peaks : XSDataDouble optional
 			saturationRangeAverage : XSDataDouble optional
 			saturationRangeMax : XSDataDouble optional
 			saturationRangeMin : XSDataDouble optional
@@ -59,6 +51,8 @@ package XSDataMXv1 {
 		complex type XSDataInputControlISPyB extends XSDataInput {
 			characterisationResult : XSDataResultCharacterisation
 			dataCollectionId : XSDataInteger optional
+			kappa : XSDataAngle optional
+			phi : XSDataAngle optional
 		}
 
 		complex type XSDataInputControlImageQualityIndicators extends XSDataInput {
@@ -97,6 +91,7 @@ package XSDataMXv1 {
 			shortSummary : XSDataString
 			statusMessage : XSDataString
 			strategyResult : XSDataResultStrategy optional
+			xdsBackgroundImage : XSDataFile optional
 		}
 
 		complex type XSDataResultControlISPyB extends XSDataResult {
@@ -258,6 +253,8 @@ package XSDataMXv1 {
 			requiredMultiplicity : XSDataDouble optional
 			requiredResolution : XSDataDouble optional
 			strategyOption : XSDataString optional
+			userDefinedRotationRange : XSDataAngle optional
+			userDefinedRotationStart : XSDataAngle optional
 		}
 
 	}
@@ -273,11 +270,11 @@ package XSDataMXv1 {
 		complex type XSDataIndexingResult extends XSDataResult {
 			image : XSDataImage []
 			indexingLogFile : XSDataFile optional
-			predictionResult : XSDataGeneratePredictionResult
+			labelitIndexing : XSDataBoolean
+			predictionResult : XSDataGeneratePredictionResult optional
+			selectedSolution : XSDataIndexingSolutionSelected
 			optional
-			selectedSolution : XSDataIndexingSolutionSelected optional
-			solution : XSDataIndexingSolution []
-			optional
+			solution : XSDataIndexingSolution [] optional
 		}
 
 		complex type XSDataIndexingSolution extends XSData {
@@ -417,6 +414,8 @@ package XSDataMXv1 {
 		complex type XSDataSample extends XSData {
 			"This defines the main properties of a sample:\r\n- absorbed dose rate in Gray/sec\r\n- shape: the factor that is related to the sample and the beam size (1 if crystal smaller than beam size or = to the ratio of crystal size to the beam size if the beam is smaller then crystal).\r\n- sample size\r\n- the susceptibility of the sample to radiation damage."
 			absorbedDoseRate : XSDataAbsorbedDoseRate optional
+			radiationDamageModelBeta : XSDataDouble optional
+			radiationDamageModelGamma : XSDataDouble optional
 			shape : XSDataDouble optional
 			size : XSDataSize optional
 			susceptibility : XSDataDouble optional
@@ -492,27 +491,11 @@ package XSDataMXv1 {
 			bestLogFile : XSDataFile optional
 			collectionPlan : XSDataCollectionPlan [] optional
 			raddoseLogFile : XSDataFile optional
+			sample : XSDataSampleCrystalMM optional
 		}
 
 		complex type XSDataStatisticsStrategy extends XSData {
 			resolutionBin : XSDataResolutionBin [] optional
-		}
-
-		complex type XSDataStrategyInput extends XSDataInput {
-			"These classes are deprecated and will be removed once the corresponding plugins that use them have been removed."
-			bestFileContentDat : XSDataString
-			bestFileContentHKL : XSDataString []
-			bestFileContentPar : XSDataString
-			crystalRefined : XSDataCrystal
-			diffractionPlan : XSDataDiffractionPlan
-			experimentalCondition : XSDataExperimentalCondition
-			sample : XSDataSampleCrystalMM
-		}
-
-		complex type XSDataStrategyResult extends XSDataResult {
-			"Several collection plans could be present in case of multi-sweep strategy"
-			collectionPlan : XSDataCollectionPlan
-			[]
 		}
 
 		complex type XSDataStrategySummary extends XSData {

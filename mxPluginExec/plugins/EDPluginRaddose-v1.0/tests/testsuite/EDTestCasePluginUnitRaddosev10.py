@@ -2,9 +2,7 @@
 #    Project: mxPluginExec
 #             http://www.edna-site.org
 #
-#    File: "$Id$"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal authors:      Marie-Francoise Incardona (incardon@esrf.fr)
@@ -30,11 +28,14 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20120712"
+__status__ = "production"
 
 import os
 
 from EDAssert                        import EDAssert
 from EDTestCasePluginUnit            import EDTestCasePluginUnit
+from EDConfiguration                 import EDConfiguration
 
 
 class EDTestCasePluginUnitRaddosev10(EDTestCasePluginUnit):
@@ -57,9 +58,9 @@ class EDTestCasePluginUnitRaddosev10(EDTestCasePluginUnit):
 
     def testConfigureOK(self):
         edPluginRaddose = self.createPlugin()
-        edStringConfigurationFile = os.path.join(self.strDataPath, "XSConfiguration.xml")
-        xsPluginItemGood01 = self.getPluginConfiguration(edStringConfigurationFile)
-        edPluginRaddose.setConfiguration(xsPluginItemGood01)
+        edConfigurationGood01 = EDConfiguration(os.path.join(self.strDataPath, "XSConfiguration.xml"))
+        dictItemGood01 = edConfigurationGood01.get(self.getPluginName())
+        edPluginRaddose.setConfig(dictItemGood01, _bLocal = True)
         edPluginRaddose.setScriptExecutable("cat")
         edPluginRaddose.configure()
         EDAssert.equal("/bin/bash", edPluginRaddose.getScriptShell())

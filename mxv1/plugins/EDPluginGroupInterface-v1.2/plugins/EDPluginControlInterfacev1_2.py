@@ -95,7 +95,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         self.setXSDataInputClass(XSDataInputCharacterisation, "inputCharacterisation")
 
         self.strEDPluginControlSubWedgeAssembleName = "EDPluginControlSubWedgeAssemblev1_1"
-        self.strEDPluginControlCharacterisationName = "EDPluginControlCharacterisationv1_1"
+        self.strEDPluginControlCharacterisationName = "EDPluginControlCharacterisationv1_3"
         self.strEDPluginControlISPyBName = "EDPluginControlISPyBv1_1"
 
         self.edPluginControlSubWedgeAssemble = None
@@ -140,21 +140,17 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         """
         EDPluginControl.configure(self)
         EDVerbose.DEBUG("EDPluginControlInterfacev1_2.configure")
-        pluginConfiguration = self.getConfiguration()
+        if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
+            self.strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")
+        if (self.getControlledPluginName("characterisationPlugin") is not None):
+            self.strEDPluginControlCharacterisationName = self.getControlledPluginName("characterisationPlugin")
+        if (self.getControlledPluginName("ispybPlugin") is not None):
+            self.strEDPluginControlISPyBName = self.getControlledPluginName("ispybPlugin")
 
-        if (pluginConfiguration is None):
-            EDVerbose.DEBUG("No plugin configuration found for EDPluginControlInterfacev1_2.")
-        else:
-            if (self.getControlledPluginName("subWedgeAssemblePlugin") is not None):
-                self.strEDPluginControlSubWedgeAssembleName = self.getControlledPluginName("subWedgeAssemblePlugin")
-            if (self.getControlledPluginName("characterisationPlugin") is not None):
-                self.strEDPluginControlCharacterisationName = self.getControlledPluginName("characterisationPlugin")
-            if (self.getControlledPluginName("ispybPlugin") is not None):
-                self.strEDPluginControlISPyBName = self.getControlledPluginName("ispybPlugin")
-
-            bUseISPyBPlugin = EDConfiguration.getStringParamValue(pluginConfiguration, "useISPyBPlugin")
-            if (bUseISPyBPlugin.lower() != "true"):
-                self.strEDPluginControlISPyBName = None
+        bUseISPyBPlugin = self.config.get("useISPyBPlugin")
+        if not bUseISPyBPlugin:
+            self.DEBUG("EDPluginControlInterfacev1_2 configured to not use ISPyB")
+            self.strEDPluginControlISPyBName = None
 
 
     def preProcess(self, _edPlugin=None):
@@ -589,6 +585,7 @@ class EDPluginControlInterfacev1_2(EDPluginControl):
         if _edPlugin.hasDataOutput("statusMessage"):
             self.strStatusMessage = _edPlugin.getDataOutput("statusMessage")[0].getValue()
         self.generateExecutiveSummary(self)
+        self.storeResultsInISPyB(_edPlugin)
         self.setFailure()
 
     def doSuccessActionCharacterisation(self, _edPlugin=None):

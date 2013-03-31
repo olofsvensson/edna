@@ -37,8 +37,10 @@ import XSDataMXv2
 EDFactoryPluginStatic.loadModule("XSDataSTACv2_0")
 import XSDataSTACv2_0
 
-EDFactoryPluginStatic.loadModule("EDPluginControlCharacterisationv1_2")
-from EDPluginControlCharacterisationv1_2 import EDPluginControlCharacterisationv1_2
+#EDFactoryPluginStatic.loadModule("EDPluginControlCharacterisationv1_2")
+#from EDPluginControlCharacterisationv1_2 import EDPluginControlCharacterisationv1_2
+#EDFactoryPluginStatic.loadModule("EDPluginControlCharacterisationv1_3")
+#from EDPluginControlCharacterisationv1_3 import EDPluginControlCharacterisationv1_3
 EDFactoryPluginStatic.loadModule("EDHandlerXSDataMXv1v1_0")
 from EDHandlerXSDataMXv1v1_0 import EDHandlerXSDataMXv1v1_0
 EDFactoryPluginStatic.loadModule("EDHandlerXSDataSTACv2_0")
@@ -77,7 +79,7 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
         self.setXSDataInputClass(XSDataCollection, "mxv2DataCollection")
         self.setXSDataInputClass(XSDataMXv2.XSDataCollection, "mxv2DataCollection_Reference")
         self.setXSDataInputClass(kappa_alignment_response, "possibleOrientations")
-        self.strPluginControlCharacterisation = "EDPluginControlCharacterisationv1_2"
+        self.strPluginControlCharacterisation = "EDPluginControlCharacterisationv1_3"
         self.edPluginControlCharacterisation = None
         self.mxv1InputCharacterisation = None
         self.mxv1ResultCharacterisation_Reference = None
@@ -222,3 +224,13 @@ class EDPluginControlCharAtNewOrientationv2_0(EDPluginControl):
         EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.doCharacterisationFailure")
         self.retrieveFailureMessages(_edPlugin, "EDPluginControlCharacterisationv2_0.doFailureActionIndexing")
 
+
+    def generateExecutiveSummary(self, _edPlugin):
+        """
+        Generates a summary of the execution of the plugin.
+        """
+        EDPluginControl.generateExecutiveSummary(self, _edPlugin)
+        EDVerbose.DEBUG("EDPluginControlCharForReorientationv2_0.generateExecutiveSummary")
+        if (self.edPluginControlCharacterisation is not None):
+            self.appendExecutiveSummary(self.edPluginControlCharacterisation, "Strategy : ")
+            self.addExecutiveSummaryLine("") 

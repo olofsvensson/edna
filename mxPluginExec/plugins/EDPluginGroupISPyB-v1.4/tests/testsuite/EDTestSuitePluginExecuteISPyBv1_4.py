@@ -40,9 +40,15 @@ class EDTestSuitePluginExecuteISPyBv1_4(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreImageQualityIndicatorsv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreAutoProcv1_4")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreAutoProcv1_4_failedProcessing")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreAutoProcStatusv1_4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreAutoProcStatusv1_4_withIntegrationId")
         self.addTestCaseFromName("EDTestCasePluginExecuteISPyBRetrieveDataCollectionv1_4")
-        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreDataCollectionv1_4")
-
+#        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreDataCollectionv1_4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreScreeningv1_4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreScreeningv1_4_withoutDataCollectionId")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBStoreWorkflowv1_4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBUpdateDataCollectionGroupWorkflowIdv1_4")
+        self.addTestCaseFromName("EDTestCasePluginExecuteISPyBGroupDataCollectionsv1_4")
 
 ##############################################################################
 if __name__ == '__main__':

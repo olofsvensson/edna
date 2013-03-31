@@ -29,6 +29,8 @@ __authors__ = [ "Olof Svensson", "Marie-Francoise Incardona", "Karl Levik" ]
 __contact__ = "svensson@esrf.fr"
 __license__ = "LGPLv3+"
 __copyright__ = "European Synchrotron Radiation Facility, Grenoble, France"
+__date__ = "20120712"
+__status__ = "production"
 
 import os
 
@@ -156,8 +158,7 @@ class EDTestCasePluginUnitMOSFLMv10(EDTestCasePluginUnit):
     def testReversephiConfiguration(self):
         strPathToTestConfigFile = os.path.join(self.strUnitTestDataHome, "XSConfiguration_reversephi.xml")
         edConfiguration = EDConfiguration(strPathToTestConfigFile)
-        edConfiguration.load()
-        xsPluginItem = edConfiguration.getPluginItem("EDPluginMOSFLMv10")
+        xsPluginItem = edConfiguration.getXSConfigurationItem("EDPluginMOSFLMv10")
         xsDataMOSFLMInput = XSDataMOSFLMInput()
         xsDataMOSFLMBeam = XSDataMOSFLMBeamPosition()
         xsDataMOSFLMBeam.setX(XSDataLength(1.0))
@@ -185,8 +186,7 @@ class EDTestCasePluginUnitMOSFLMv10(EDTestCasePluginUnit):
     def testRasterConfiguration(self):
         strPathToTestConfigFile = os.path.join(self.strUnitTestDataHome, "XSConfiguration_raster.xml")
         edConfiguration = EDConfiguration(strPathToTestConfigFile)
-        edConfiguration.load()
-        xsPluginItem = edConfiguration.getPluginItem("EDPluginMOSFLMv10")
+        xsPluginItem = edConfiguration.getXSConfigurationItem("EDPluginMOSFLMv10")
         xsDataMOSFLMInput = XSDataMOSFLMInput()
         xsDataMOSFLMBeam = XSDataMOSFLMBeamPosition()
         xsDataMOSFLMBeam.setX(XSDataLength(1.0))

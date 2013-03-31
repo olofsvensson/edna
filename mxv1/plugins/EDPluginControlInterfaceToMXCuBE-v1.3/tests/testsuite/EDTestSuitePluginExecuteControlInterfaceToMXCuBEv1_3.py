@@ -2,9 +2,7 @@
 #    Project: EDNA MXv1
 #             http://www.edna-site.org
 #
-#    File: "$Id: EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_3.py 2101 2010-09-27 09:38:53Z svensson $"
-#
-#    Copyright (C) 2008-2009 European Synchrotron Radiation Facility
+#    Copyright (C) 2008-2012 European Synchrotron Radiation Facility
 #                            Grenoble, France
 #
 #    Principal author:       Olof Svensson (svensson@esrf.fr) 
@@ -37,7 +35,9 @@ class EDTestSuitePluginExecuteControlInterfaceToMXCuBEv1_3(EDTestSuite):
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_characterisationFailure")
         self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_withDamPar")
-
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_bestBFactorFailed")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlMXCuBEWrapperv1_3")
+        self.addTestCaseFromName("EDTestCasePluginExecuteControlInterfaceToMXCuBEv1_3_withRotationRangeAndRadiationDamageModel")
 
 if __name__ == '__main__':
 
