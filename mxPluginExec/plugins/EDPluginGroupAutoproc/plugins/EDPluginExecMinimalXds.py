@@ -160,14 +160,16 @@ class EDPluginExecMinimalXds(EDPluginExecProcessScript):
             parsed_config['UNIT_CELL_CONSTANTS='] = unit_cell.value
 
         # For [XY]-GEO_CORR files, link them in the cwd and fix their paths
+        real_processed_data_dir = real_data_dir.replace("RAW_DATA", "PROCESSED_DATA")
         if 'X-GEO_CORR=' in parsed_config:
+            
             xgeo = parsed_config['X-GEO_CORR='][0]
-            os.symlink(xgeo,
+            os.symlink(os.path.join(real_processed_data_dir, os.path.basename(xgeo)),
                        os.path.join(self.getWorkingDirectory(), os.path.basename(xgeo)))
             parsed_config['X-GEO_CORR='] = os.path.basename(xgeo)
         if 'Y-GEO_CORR=' in parsed_config:
             ygeo = parsed_config['Y-GEO_CORR='][0]
-            os.symlink(ygeo,
+            os.symlink(os.path.join(real_processed_data_dir, os.path.basename(ygeo)),
                        os.path.join(self.getWorkingDirectory(), os.path.basename(ygeo)))
             parsed_config['Y-GEO_CORR='] = os.path.basename(ygeo)
 
