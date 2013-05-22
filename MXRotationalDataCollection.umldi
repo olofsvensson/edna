@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagrams:Diagrams xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.topcased.org/DI/1.0" xmlns:diagrams="http://www.topcased.org/Diagrams/1.0" xmi:id="_cEMQQYpWEeKOKKmWie4mNQ" activeDiagram="_cEPTkIpWEeKOKKmWie4mNQ">
+  <model href="MXRotationalDataCollection.uml#_w8IxIM37EdqwVrslYOdUDA"/>
+  <diagrams xmi:id="_cEPTkIpWEeKOKKmWie4mNQ" position="0,0" size="100,100" name="MXRotationalDataCollection" viewport="0,0">
+    <property xmi:id="_cQ3aUIpWEeKOKKmWie4mNQ" key="pageFormatName" value="A4"/>
+    <property xmi:id="_cQ3aUYpWEeKOKKmWie4mNQ" key="diagramWidth" value="840"/>
+    <property xmi:id="_cQ3aUopWEeKOKKmWie4mNQ" key="diagramHeight" value="1188"/>
+    <property xmi:id="_cQ3aU4pWEeKOKKmWie4mNQ" key="pageMarginName" value="Small Margin"/>
+    <property xmi:id="_cQ3aVIpWEeKOKKmWie4mNQ" key="diagramTopMargin" value="20"/>
+    <property xmi:id="_cQ3aVYpWEeKOKKmWie4mNQ" key="diagramBottomMargin" value="20"/>
+    <property xmi:id="_cQ3aVopWEeKOKKmWie4mNQ" key="diagramLeftMargin" value="20"/>
+    <property xmi:id="_cQ3aV4pWEeKOKKmWie4mNQ" key="diagramRightMargin" value="20"/>
+    <property xmi:id="_cQ3aWIpWEeKOKKmWie4mNQ" key="orientation" value="portrait"/>
+    <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_cEP6oIpWEeKOKKmWie4mNQ" presentation="org.topcased.modeler.uml.classdiagram">
+      <element href="MXRotationalDataCollection.uml#_w8IxIM37EdqwVrslYOdUDA"/>
+    </semanticModel>
+    <contained xsi:type="di:GraphNode" xmi:id="_QMJOwIpXEeKOKKmWie4mNQ" position="81,89" size="100,-1">
+      <anchorage xmi:id="_m4cVoIpZEeKOKKmWie4mNQ" graphEdge="_m4q_IIpZEeKOKKmWie4mNQ"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_QMJ10IpXEeKOKKmWie4mNQ" presentation="default">
+        <element href="MXRotationalDataCollection.uml#_QOHksIpXEeKOKKmWie4mNQ"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_QMJ10YpXEeKOKKmWie4mNQ">
+        <property xmi:id="_QMJ10opXEeKOKKmWie4mNQ" key="eStructuralFeatureID" value="37"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_QMJ104pXEeKOKKmWie4mNQ" presentation="default">
+          <element href="MXRotationalDataCollection.uml#_QOHksIpXEeKOKKmWie4mNQ"/>
+        </semanticModel>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_QMJ11IpXEeKOKKmWie4mNQ">
+        <property xmi:id="_QMJ11YpXEeKOKKmWie4mNQ" key="eStructuralFeatureID" value="47 50 "/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_QMJ11opXEeKOKKmWie4mNQ" presentation="default">
+          <element href="MXRotationalDataCollection.uml#_QOHksIpXEeKOKKmWie4mNQ"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_WJtugIpZEeKOKKmWie4mNQ" position="146,260" size="272,-1">
+      <anchorage xmi:id="_m4cVoYpZEeKOKKmWie4mNQ" graphEdge="_m4q_IIpZEeKOKKmWie4mNQ _hjcKYIpaEeKOKKmWie4mNQ"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_WJtugYpZEeKOKKmWie4mNQ" presentation="default">
+        <element href="MXRotationalDataCollection.uml#_WJz1IIpZEeKOKKmWie4mNQ"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_WJtugopZEeKOKKmWie4mNQ">
+        <property xmi:id="_WJtug4pZEeKOKKmWie4mNQ" key="eStructuralFeatureID" value="37"/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_WJtuhIpZEeKOKKmWie4mNQ" presentation="default">
+          <element href="MXRotationalDataCollection.uml#_WJz1IIpZEeKOKKmWie4mNQ"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_dP9_gIpZEeKOKKmWie4mNQ" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_dP9_gYpZEeKOKKmWie4mNQ" presentation="default">
+            <element href="MXRotationalDataCollection.uml#_dP_NoIpZEeKOKKmWie4mNQ"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_g49fcIpZEeKOKKmWie4mNQ" position="0,0" size="-1,-1">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_g4-GgIpZEeKOKKmWie4mNQ" presentation="default">
+            <element href="MXRotationalDataCollection.uml#_g4_UoIpZEeKOKKmWie4mNQ"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_WJtuhYpZEeKOKKmWie4mNQ">
+        <property xmi:id="_WJtuhopZEeKOKKmWie4mNQ" key="eStructuralFeatureID" value="47 50 "/>
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_WJtuh4pZEeKOKKmWie4mNQ" presentation="default">
+          <element href="MXRotationalDataCollection.uml#_WJz1IIpZEeKOKKmWie4mNQ"/>
+        </semanticModel>
+      </contained>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_m4q_IIpZEeKOKKmWie4mNQ" anchor="_m4cVoIpZEeKOKKmWie4mNQ _m4cVoYpZEeKOKKmWie4mNQ">
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_m4q_IYpZEeKOKKmWie4mNQ" presentation="default">
+        <element href="MXRotationalDataCollection.uml#_m4uCcIpZEeKOKKmWie4mNQ"/>
+      </semanticModel>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_IopZEeKOKKmWie4mNQ" id="srcNameEdgeObject" uDistance="10" vDistance="10"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_I4pZEeKOKKmWie4mNQ" id="srcPropertiesEdgeObject" uDistance="25" vDistance="10"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_JIpZEeKOKKmWie4mNQ" id="srcCountEdgeObject" uDistance="10" vDistance="-10"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_JYpZEeKOKKmWie4mNQ" id="targetNameEdgeObject" uDistance="27" vDistance="23"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_JopZEeKOKKmWie4mNQ" id="targetPropertiesEdgeObject" uDistance="25" vDistance="10"/>
+      <contained xsi:type="di:EdgeObjectUV" xmi:id="_m4q_J4pZEeKOKKmWie4mNQ" id="targetCountEdgeObject" uDistance="12" vDistance="-27"/>
+      <contained xsi:type="di:EdgeObjectOffset" xmi:id="_m4q_KIpZEeKOKKmWie4mNQ" visible="false" id="middleNameEdgeObject" offset="0,10"/>
+      <contained xsi:type="di:EdgeObjectOffset" xmi:id="_m4q_KYpZEeKOKKmWie4mNQ" id="stereotypeEdgeObject" offset="0,-10"/>
+    </contained>
+    <contained xsi:type="di:GraphNode" xmi:id="_v21M8IpZEeKOKKmWie4mNQ" position="478,149" size="304,360">
+      <anchorage xmi:id="_hjZuIIpaEeKOKKmWie4mNQ" graphEdge="_hjcKYIpaEeKOKKmWie4mNQ"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_v21M8YpZEeKOKKmWie4mNQ" presentation="default">
+        <element href="MXRotationalDataCollection.uml#_v2_lAIpZEeKOKKmWie4mNQ"/>
+      </semanticModel>
+    </contained>
+    <contained xsi:type="di:GraphEdge" xmi:id="_hjcKYIpaEeKOKKmWie4mNQ" anchor="_hjZuIIpaEeKOKKmWie4mNQ _m4cVoYpZEeKOKKmWie4mNQ">
+      <semanticModel xsi:type="di:SimpleSemanticModelElement" xmi:id="_hjcxcIpaEeKOKKmWie4mNQ" presentation="default" typeInfo="CommentLink"/>
+    </contained>
+  </diagrams>
+</diagrams:Diagrams>

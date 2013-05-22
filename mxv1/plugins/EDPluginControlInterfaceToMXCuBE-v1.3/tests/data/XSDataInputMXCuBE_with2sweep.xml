@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<XSDataInputMXCuBE>
+  <dataSet>
+  	<imageFile>
+      <path>
+        <value>${EDNA_TESTIMAGES}/ref-thermo1_1_001.img</value>
+      </path>
+    </imageFile>
+  	<imageFile>
+      <path>
+        <value>${EDNA_TESTIMAGES}/ref-thermo1_1_002.img</value>
+      </path>
+    </imageFile>
+  </dataSet>
+  <diffractionPlan>
+    <maxExposureTimePerDataCollection>
+      <value>100000</value>
+    </maxExposureTimePerDataCollection>
+    <aimedIOverSigmaAtHighestResolution>
+      <value>3.0</value>
+    </aimedIOverSigmaAtHighestResolution>
+    <strategyOption>
+      <value>-low ever</value>
+    </strategyOption>
+  </diffractionPlan>
+  <experimentalCondition>
+    <goniostat>
+      <minOscillationWidth>
+        <value>0.2</value>
+      </minOscillationWidth>
+      <maxOscillationSpeed>
+        <value>360</value>
+      </maxOscillationSpeed>
+    </goniostat>
+    <beam>
+      <minExposureTimePerImage>
+        <value>0.1</value>
+      </minExposureTimePerImage>
+      <flux>
+        <value>12.0e11</value>
+      </flux>
+      <size>
+        <x>
+          <value>0.11</value>
+        </x>
+        <y>
+          <value>0.12</value>
+        </y>
+      </size>
+      <transmission><value>100</value></transmission>
+    </beam>
+  </experimentalCondition>
+</XSDataInputMXCuBE>

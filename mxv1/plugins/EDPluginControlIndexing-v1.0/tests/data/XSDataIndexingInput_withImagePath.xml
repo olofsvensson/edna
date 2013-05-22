@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<XSDataIndexingInput>
+	<imagePath> 
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-testscale_1_001.img</value>
+        </path>
+	</imagePath>
+	<imagePath> 
+        <path>
+            <value>${EDNA_TESTIMAGES}/ref-testscale_1_002.img</value>
+        </path>
+	</imagePath>
+</XSDataIndexingInput>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA">
+  <packagedElement xmi:type="uml:Package" xmi:id="_w8IxIM37EdqwVrslYOdUDA" name="MXRotationalDataCollection">
+    <ownedComment xmi:id="_v2_lAIpZEeKOKKmWie4mNQ" annotatedElement="_WJz1IIpZEeKOKKmWie4mNQ">
+      <body>Sample position: a 3D position vector to a certain location of the sample at zero goniometer settings
+
+Origin: the sample position (0,0,0) falling on the beam position (a reference point on the beam path - at the focal distance of the on-axis microscope)
+
+Sample orientation: The rotational matrix describing the actual rotation of the sample comparing to it's orientation at zero goniometer settings.
+
+If any of the sample position or orientation attributes are not specified, the sample needs or must be assumed to be maintained with these parameters unchanged.</body>
+    </ownedComment>
+    <ownedComment xmi:id="_lE9JUIpaEeKOKKmWie4mNQ">
+      <body>GoniostatSetting optional: In case it's missing </body>
+    </ownedComment>
+    <ownedComment xmi:id="_Q9i5sIpbEeKOKKmWie4mNQ">
+      <body>This data model cannot describe helical (or 4D scan) data collections where position and orientation is changed during data collection, see: MXHelicalDataCollection where we will have start and end data goniostat settings.</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Class" xmi:id="_QOHksIpXEeKOKKmWie4mNQ" name="SubWedge"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_WJz1IIpZEeKOKKmWie4mNQ" name="GoniostatSetting">
+      <ownedAttribute xmi:id="_dP_NoIpZEeKOKKmWie4mNQ" name="samplePosition">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sB0NwIpaEeKOKKmWie4mNQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_g4_UoIpZEeKOKKmWie4mNQ" name="sampleOrientation">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_suLkgIpaEeKOKKmWie4mNQ"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_m4uCcIpZEeKOKKmWie4mNQ" name="A_&lt;subWedge>_&lt;goniostatSetting>" memberEnd="_m4uCcYpZEeKOKKmWie4mNQ _m4uCdIpZEeKOKKmWie4mNQ" navigableOwnedEnd="_m4uCdIpZEeKOKKmWie4mNQ">
+      <ownedEnd xmi:id="_m4uCcYpZEeKOKKmWie4mNQ" name="" type="_QOHksIpXEeKOKKmWie4mNQ" association="_m4uCcIpZEeKOKKmWie4mNQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_m4uCcopZEeKOKKmWie4mNQ" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_m4uCc4pZEeKOKKmWie4mNQ" value="1"/>
+      </ownedEnd>
+      <ownedEnd xmi:id="_m4uCdIpZEeKOKKmWie4mNQ" name="goniostatSetting" type="_WJz1IIpZEeKOKKmWie4mNQ" isOrdered="true" isUnique="false" association="_m4uCcIpZEeKOKKmWie4mNQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_m4uCdYpZEeKOKKmWie4mNQ" value="2"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_m4uCdopZEeKOKKmWie4mNQ"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
